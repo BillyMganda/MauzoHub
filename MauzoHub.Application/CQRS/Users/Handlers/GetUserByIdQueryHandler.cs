@@ -17,7 +17,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
 
-            var userDto = new GetUserDto()
+            var userDto = new GetUserDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,

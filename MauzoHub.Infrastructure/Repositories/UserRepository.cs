@@ -20,7 +20,8 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            return await _usersCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
+            var user = await _usersCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
+            return user;
         }
 
         public async Task<User> GetByEmailAsync(string email)
