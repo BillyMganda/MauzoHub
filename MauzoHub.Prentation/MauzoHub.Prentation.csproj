@@ -14,4 +14,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MauzoHub.Infrastructure\MauzoHub.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
