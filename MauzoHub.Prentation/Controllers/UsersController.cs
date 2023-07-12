@@ -59,14 +59,9 @@ namespace MauzoHub.Prentation.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, UpdateUserCommand command)
-        {
-            if (id != command.Id)
-            {
-                return BadRequest("User ID mismatch.");
-            }
-
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        {            
             var user = await _mediator.Send(command);
 
             return Ok(user);
@@ -76,8 +71,8 @@ namespace MauzoHub.Prentation.Controllers
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var command = new DeleteUserCommand { Id = id };
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
