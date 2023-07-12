@@ -8,13 +8,17 @@ namespace MauzoHub.Infrastructure.DependencyInjections
 {
     public static class DependencyInjection
     {
-        public static void ConfigureInfrastructureServices(IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddSingleton<MongoDbContext>();
-            services.AddSingleton(provider => provider.GetRequiredService<MongoDbContext>().Users);
+            // DB Injection
+            services.Configure<MauzoHubDatabaseSettings>(options =>
+            {
+                options.ConnectionString = configuration.GetSection("MauzoHubDatabase:ConnectionString").Value!;
+                // Set other properties of MauzoHubDatabaseSettings here
+            });
 
-            //services.Configure<MauzoHubDatabaseSettings>(configuration.GetSection("MauzoHubDatabase"));
+            // Services Injection
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

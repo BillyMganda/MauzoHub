@@ -1,4 +1,4 @@
-using MauzoHub.Infrastructure.Databases;
+using MauzoHub.Infrastructure.DependencyInjections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,8 @@ builder.Services.AddSwaggerGen();
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
-builder.Services.Configure<MauzoHubDatabaseSettings>(builder.Configuration.GetSection("MauzoHubDatabase"));
+builder.Services.ConfigureInfrastructureServices(configuration);
+
 
 var app = builder.Build();
 
