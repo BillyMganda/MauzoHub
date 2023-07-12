@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MauzoHub.Application\MauzoHub.Application.csproj" />
+    <ProjectReference Include="..\MauzoHub.Infrastructure\MauzoHub.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
