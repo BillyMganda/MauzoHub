@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
-builder.Services.Configure<MauzoHubDatabaseSettings>(builder.Configuration.GetSection("MicroservicesOrderDatabase"));
+builder.Services.Configure<MauzoHubDatabaseSettings>(builder.Configuration.GetSection("MauzoHubDatabase"));
 
 var app = builder.Build();
 

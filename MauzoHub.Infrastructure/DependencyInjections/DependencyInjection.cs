@@ -13,6 +13,8 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<MongoDbContext>();
             services.AddSingleton(provider => provider.GetRequiredService<MongoDbContext>().Users);
+
+            //services.Configure<MauzoHubDatabaseSettings>(configuration.GetSection("MauzoHubDatabase"));
         }
     }
 }
