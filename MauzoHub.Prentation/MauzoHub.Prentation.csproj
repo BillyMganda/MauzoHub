@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MauzoHub.Application\MauzoHub.Application.csproj" />
     <ProjectReference Include="..\MauzoHub.Infrastructure\MauzoHub.Infrastructure.csproj" />
   </ItemGroup>
 

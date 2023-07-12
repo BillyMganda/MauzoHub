@@ -1,3 +1,4 @@
+using MauzoHub.Application.DependencyInjections;
 using MauzoHub.Infrastructure.DependencyInjections;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 builder.Services.ConfigureInfrastructureServices(configuration);
+builder.Services.ConfigureApplicationServices();
 
 
 var app = builder.Build();
