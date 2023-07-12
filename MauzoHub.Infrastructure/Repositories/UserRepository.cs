@@ -1,6 +1,6 @@
 ﻿using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
-using MauzoHub.Infrastructure.Database;
+using MauzoHub.Infrastructure.Databases;
 using MongoDB.Driver;
 
 namespace MauzoHub.Infrastructure.Repositories
