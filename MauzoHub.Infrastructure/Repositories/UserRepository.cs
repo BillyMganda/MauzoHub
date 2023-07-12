@@ -1,4 +1,5 @@
-﻿using MauzoHub.Domain.Entities;
+﻿using Amazon.Util;
+using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MauzoHub.Infrastructure.Databases;
 using Microsoft.Extensions.Options;
@@ -16,34 +17,37 @@ namespace MauzoHub.Infrastructure.Repositories
             _usersCollection = mongoDatabase.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
         }
 
-        public User GetById(Guid id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
-            return _usersCollection.Find(user => user.Id == id).FirstOrDefault();
+            return await _usersCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
         }
 
-        public User GetByEmail(string email)
+        public async Task<User> GetByEmailAsync(string email)
         {
-            return _usersCollection.Find(user => user.Email == email).FirstOrDefault();
+            return await _usersCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return _usersCollection.Find(_ => true).ToList();
+            return await _usersCollection.Find(_ => true).ToListAsync();
         }
 
-        public void Add(User user)
+        public async Task<User> AddAsync(User user)
         {
-            _usersCollection.InsertOne(user);
+            await _usersCollection.InsertOneAsync(user);
+            return user;
         }
 
-        public void Update(User user)
+        public async Task<User> UpdateAsync(User user)
         {
-            _usersCollection.ReplaceOne(u => u.Id == user.Id, user);
+            await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            return user;
         }
 
-        public void Delete(User user)
+        public async Task<User> DeleteAsync(User user)
         {
-            _usersCollection.DeleteOne(u => u.Id == user.Id);
+            await _usersCollection.DeleteOneAsync(u => u.Id == user.Id);
+            return user;
         }
     }
 }

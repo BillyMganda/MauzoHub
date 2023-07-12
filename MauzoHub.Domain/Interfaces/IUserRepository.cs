@@ -4,6 +4,6 @@ namespace MauzoHub.Domain.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {        
-        User GetByEmail(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }
