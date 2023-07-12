@@ -14,6 +14,8 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.Configure<MauzoHubDatabaseSettings>(options =>
             {
                 options.ConnectionString = configuration.GetSection("MauzoHubDatabase:ConnectionString").Value!;
+                options.DatabaseName = configuration.GetSection("MauzoHubDatabase:DatabaseName").Value!;
+                options.UsersCollectionName = configuration.GetSection("MauzoHubDatabase:UsersCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 

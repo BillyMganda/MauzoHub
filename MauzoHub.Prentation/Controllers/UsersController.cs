@@ -23,15 +23,18 @@ namespace MauzoHub.Prentation.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                var userDto = await _mediator.Send(command);
-                return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
-            }
-            catch (Exception)            {
+            var userDto = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
+
+            //try
+            //{
+            //    var userDto = await _mediator.Send(command);
+            //    return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
+            //}
+            //catch (Exception)            {
                 
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the user.");
-            }
+            //    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the user.");
+            //}
         }
 
         [HttpGet("id")]

@@ -13,8 +13,9 @@ namespace MauzoHub.Infrastructure.Repositories
         public UserRepository(IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
-            var mongoDatabase = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
-            _usersCollection = mongoDatabase.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
+            var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
+
+            _usersCollection = database.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
         }
 
         public async Task<User> GetByIdAsync(Guid id)
