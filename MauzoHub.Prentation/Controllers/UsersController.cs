@@ -35,7 +35,7 @@ namespace MauzoHub.Prentation.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var query = new GetUserByIdQuery { Id = id };
@@ -47,6 +47,14 @@ namespace MauzoHub.Prentation.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var query = new GetUsersQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("email/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var query = new GetUserByEmailQuery { Email = email };
             var result = await _mediator.Send(query);
             return Ok(result);
         }
