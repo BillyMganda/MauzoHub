@@ -1,7 +1,7 @@
 ﻿using MauzoHub.Domain.Entities;
 using MongoDB.Driver;
 
-namespace MauzoHub.Infrastructure.Data
+namespace MauzoHub.Infrastructure.Database
 {
     public class MongoDbContext
     {
