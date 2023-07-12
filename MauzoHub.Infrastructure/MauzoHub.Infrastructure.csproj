@@ -12,4 +12,8 @@
     <PackageReference Include="MongoDB.Driver.Core" Version="2.20.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MauzoHub.Domain\MauzoHub.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
