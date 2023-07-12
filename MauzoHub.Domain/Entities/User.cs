@@ -7,14 +7,14 @@
         public string Email { get; set; } = string.Empty;
         public string PasswordSalt { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;        
-        public UserRole Role { get; set; }
+        public string Role { get; set; } = string.Empty;
 
-        private User()
+        public User()
         {
 
         }
 
-        public User(string firstName, string lastName, string email, string passwordSalt, string passwordHash, UserRole role)
+        public User(string firstName, string lastName, string email, string passwordSalt, string passwordHash, string role)
         {
             Id = Guid.NewGuid();
             DateCreated = DateTime.Now;
