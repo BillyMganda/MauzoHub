@@ -42,6 +42,11 @@ namespace MauzoHub.Prentation.Middlewares
                 statusCode = HttpStatusCode.Unauthorized;
                 message = "Operation not authorized";
             }
+            else if (ex is ValidationException)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                message = "Operation not not successful, bad request";
+            }
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
