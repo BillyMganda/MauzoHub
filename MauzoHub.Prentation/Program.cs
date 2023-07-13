@@ -17,6 +17,11 @@ builder.Services.ConfigureApplicationServices();
 
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // MINE
 app.UseMiddleware<ErrorHandlingMiddleware>();
