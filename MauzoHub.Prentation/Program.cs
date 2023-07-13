@@ -1,5 +1,6 @@
 using MauzoHub.Application.DependencyInjections;
 using MauzoHub.Infrastructure.DependencyInjections;
+using MauzoHub.Prentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +18,9 @@ builder.Services.ConfigureApplicationServices();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// MINE
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
