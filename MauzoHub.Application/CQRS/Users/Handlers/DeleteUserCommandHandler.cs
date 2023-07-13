@@ -1,4 +1,5 @@
 ﻿using MauzoHub.Application.CQRS.Users.Commands;
+using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 
@@ -14,11 +15,28 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            if (request is null)
+            {
+                throw new BadRequestException("Bad request!");
+            }
 
-            await _userRepository.DeleteAsync(user);
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(request.Id);
+                if (user == null)
+                {
+                    throw new NotFoundException($"user with id {request.Id} not found");
+                }
 
-            return Unit.Value;
+                await _userRepository.DeleteAsync(user);
+
+                return Unit.Value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

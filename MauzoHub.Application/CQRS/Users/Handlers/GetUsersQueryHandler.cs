@@ -15,17 +15,24 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<IEnumerable<GetUserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAllAsync();
-
-            var userDto = users.Select(u => new GetUserDto
+            try
             {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-            });
+                var users = await _userRepository.GetAllAsync();
 
-            return userDto;
+                var userDto = users.Select(u => new GetUserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                });
+
+                return userDto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
