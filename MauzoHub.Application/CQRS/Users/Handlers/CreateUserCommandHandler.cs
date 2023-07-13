@@ -24,25 +24,28 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                 throw new BadRequestException("Bad request!");
             }
 
-            // Generate salt and hash from the password
-            (string salt, string hash) = GenerateSaltAndHash(request.Password);
-
-            // Create a new BusinessOwner User object
-            var user = new User(request.FirstName,request.LastName,request.Email,salt,hash, request.Role);
-
-            // Save the user to the repository
-            await _userRepository.AddAsync(user);
-
-            // Map the user object to GetUserDto
-            var userDto = new GetUserDto
+            try
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email
-            };
+                (string salt, string hash) = GenerateSaltAndHash(request.Password);
 
-            return userDto;
+                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, request.Role);
+
+                await _userRepository.AddAsync(user);
+
+                var userDto = new GetUserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                };
+
+                return userDto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private (string salt, string hash) GenerateSaltAndHash(string password)
