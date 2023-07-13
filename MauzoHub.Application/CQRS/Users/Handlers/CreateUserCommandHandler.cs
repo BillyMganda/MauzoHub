@@ -1,4 +1,5 @@
 ﻿using MauzoHub.Application.CQRS.Users.Commands;
+using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
@@ -18,6 +19,11 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            if(request is null)
+            {
+                throw new BadRequestException("Bad request!");
+            }
+
             // Generate salt and hash from the password
             (string salt, string hash) = GenerateSaltAndHash(request.Password);
 
