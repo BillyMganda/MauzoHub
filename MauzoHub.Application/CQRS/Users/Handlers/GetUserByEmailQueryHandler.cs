@@ -1,4 +1,5 @@
 ﻿using MauzoHub.Application.CQRS.Users.Queries;
+using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
@@ -15,17 +16,34 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<GetUserDto> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email);
-
-            var userDto = new GetUserDto
+            if (request is null)
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-            };
+                throw new BadRequestException("Bad request!");
+            }
 
-            return userDto;
+            try
+            {
+                var user = await _userRepository.GetByEmailAsync(request.Email);
+
+                if (user == null)
+                {
+                    throw new NotFoundException($"user with id {request.Email} not found");
+                }
+
+                var userDto = new GetUserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                };
+
+                return userDto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
