@@ -25,27 +25,32 @@ namespace MauzoHub.Prentation.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = "An unexpected error occurred.";
+            var message = "Operation not not successful, an unexpected error occurred.";
 
             if (ex is BadRequestException)
             {
                 statusCode = HttpStatusCode.BadRequest;
-                message = "Operation failed due to a bad request";
+                message = "Operation not not successful, bad request";
             }
             else if (ex is NotFoundException)
             {
                 statusCode = HttpStatusCode.NotFound;
-                message = "Record not found";
+                message = "Operation not not successful, not found";
             }
             else if (ex is UnauthorizedException)
             {
                 statusCode = HttpStatusCode.Unauthorized;
-                message = "Operation not authorized";
+                message = "Operation not not successful, unauthorized";
             }
             else if (ex is ValidationException)
             {
                 statusCode = HttpStatusCode.BadRequest;
                 message = "Operation not not successful, bad request";
+            }
+            else if (ex is ForbiddenException)
+            {
+                statusCode = HttpStatusCode.Forbidden;
+                message = "Operation not not successful, forbidden";
             }
 
             context.Response.ContentType = "application/json";
