@@ -25,37 +25,37 @@ namespace MauzoHub.Prentation.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = "Operation not not successful, an unexpected error occurred.";
+            var message = "Operation not successful, an unexpected error occurred.";
 
             if (ex is BadRequestException)
             {
                 statusCode = HttpStatusCode.BadRequest;
-                message = "Operation not not successful, bad request";
+                message = "Operation not successful, bad request";
             }
             else if (ex is NotFoundException)
             {
                 statusCode = HttpStatusCode.NotFound;
-                message = "Operation not not successful, not found";
+                message = "Operation not successful, not found";
             }
             else if (ex is UnauthorizedException)
             {
                 statusCode = HttpStatusCode.Unauthorized;
-                message = "Operation not not successful, unauthorized";
+                message = "Operation not successful, unauthorized";
             }
             else if (ex is ValidationException)
             {
                 statusCode = HttpStatusCode.BadRequest;
-                message = "Operation not not successful, bad request";
+                message = "Operation not successful, bad request";
             }
             else if (ex is ForbiddenException)
             {
                 statusCode = HttpStatusCode.Forbidden;
-                message = "Operation not not successful, forbidden";
+                message = "Operation not successful, forbidden";
             }
             else
             {
                 statusCode = HttpStatusCode.InternalServerError;
-                message = "Operation not not successful, an internal server error occurred";
+                message = "Operation not successful, internal server error";
             }
 
             context.Response.ContentType = "application/json";
