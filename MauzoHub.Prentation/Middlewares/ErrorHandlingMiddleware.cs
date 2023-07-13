@@ -30,7 +30,12 @@ namespace MauzoHub.Prentation.Middlewares
             if (ex is BadRequestException)
             {
                 statusCode = HttpStatusCode.BadRequest;
-                message = ex.Message;
+                message = "Bad request exception occured";
+            }
+            else if (ex is NotFoundException)
+            {
+                statusCode = HttpStatusCode.NotFound;
+                message = "Not found exception occured";
             }
 
             context.Response.ContentType = "application/json";
