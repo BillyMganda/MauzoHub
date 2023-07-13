@@ -52,6 +52,11 @@ namespace MauzoHub.Prentation.Middlewares
                 statusCode = HttpStatusCode.Forbidden;
                 message = "Operation not not successful, forbidden";
             }
+            else
+            {
+                statusCode = HttpStatusCode.InternalServerError;
+                message = "Operation not not successful, an internal server error occurred";
+            }
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
