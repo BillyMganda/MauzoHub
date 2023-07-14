@@ -1,5 +1,4 @@
-﻿using Amazon.Util;
-using MauzoHub.Domain.Entities;
+﻿using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MauzoHub.Infrastructure.Databases;
 using Microsoft.Extensions.Options;
