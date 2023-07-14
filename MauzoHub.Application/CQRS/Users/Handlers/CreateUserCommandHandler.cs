@@ -4,6 +4,7 @@ using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
+using Serilog;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -21,6 +22,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
         {
             if(request is null)
             {
+                Log.Error("request is null");
                 throw new BadRequestException("Bad request!");
             }
 
@@ -42,8 +44,9 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 return userDto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(ex, "an internal server error occured, logged by serilog");
                 throw;
             }
         }
