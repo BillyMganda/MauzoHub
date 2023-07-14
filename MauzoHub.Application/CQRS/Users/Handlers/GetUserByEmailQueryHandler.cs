@@ -3,22 +3,44 @@ using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Serilog;
+using System.Net.Http;
 
 namespace MauzoHub.Application.CQRS.Users.Handlers
 {
     public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, GetUserDto>
     {
         private readonly IUserRepository _userRepository;
-        public GetUserByEmailQueryHandler(IUserRepository userRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public GetUserByEmailQueryHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<GetUserDto> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            if (request is null)
+            var httpContext = _httpContextAccessor.HttpContext;
+            var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
+
+            var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
+            var httpMethod = httpContext.Request.Method;
+
+            if (request.Email is null)
             {
-                throw new BadRequestException("Bad request!");
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "400",
+                    ErrorMessage = $"user with email {request.Email} already exists",
+                    IPAddress = remoteIpAddress!.ToString(),
+                    ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
+                };
+
+                Log.Error("A valid email is required to perform this operation: {errorLog}", errorLog);
+                throw new BadRequestException("Bad request");
             }
 
             try
@@ -27,7 +49,18 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 if (user == null)
                 {
-                    throw new NotFoundException($"user with id {request.Email} not found");
+                    var errorLog = new ErrorLog
+                    {
+                        DateTime = DateTime.Now,
+                        ErrorCode = "404",
+                        ErrorMessage = $"user with email {request.Email} already exists",
+                        IPAddress = remoteIpAddress!.ToString(),
+                        ActionUrl = actionUrl,
+                        HttpMethod = httpMethod,
+                    };
+
+                    Log.Error($"user with email {request.Email} not found", errorLog);
+                    throw new NotFoundException($"user with email {request.Email} not found");
                 }
 
                 var userDto = new GetUserDto
@@ -40,8 +73,18 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 return userDto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "500",
+                    ErrorMessage = ex.Message,
+                    IPAddress = remoteIpAddress.ToString(),
+                    ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
+                };
+                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);
                 throw;
             }
         }

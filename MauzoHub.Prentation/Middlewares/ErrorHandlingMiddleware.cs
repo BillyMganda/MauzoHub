@@ -52,6 +52,11 @@ namespace MauzoHub.Prentation.Middlewares
                 statusCode = HttpStatusCode.Forbidden;
                 message = "Operation not successful, forbidden";
             }
+            else if (ex is UnprocessableEntityException)
+            {
+                statusCode = HttpStatusCode.UnprocessableEntity;
+                message = "Operation not successful, a similar record exists";
+            }
             else
             {
                 statusCode = HttpStatusCode.InternalServerError;
