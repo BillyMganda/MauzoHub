@@ -24,16 +24,15 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
+
+            var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
+
             var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
 
             if (findUserByEmail is not null)
-            {
-                var httpContext = _httpContextAccessor.HttpContext;
-                var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
-
-                var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
-
-
+            {              
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
@@ -74,7 +73,8 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     DateTime = DateTime.Now,
                     ErrorCode = "500",
                     ErrorMessage = ex.Message,
-                    IPAddress = "127.0.0.1",
+                    IPAddress = remoteIpAddress.ToString(),
+                    ActionUrl = actionUrl,
                 };
                 Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);                
 
