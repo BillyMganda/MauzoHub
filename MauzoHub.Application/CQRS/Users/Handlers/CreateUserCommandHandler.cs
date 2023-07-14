@@ -6,7 +6,6 @@ using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -36,8 +35,8 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
-                    ErrorCode = "400",
-                    ErrorMessage = "Bad request",
+                    ErrorCode = "422",
+                    ErrorMessage = $"user with email {request.Email} already exists",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
                 };
@@ -45,7 +44,6 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 throw new UnprocessableEntityException("Email already registered");
             }
-
             
             try
             {                
