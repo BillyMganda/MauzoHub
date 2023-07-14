@@ -86,12 +86,14 @@ namespace MauzoHub.Infrastructure.Repositories
         public async Task<User> UpdateAsync(User user)
         {
             await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            await _redisCache.RemoveAsync("allusers");
             return user;
         }
 
         public async Task<User> DeleteAsync(User user)
         {
             await _usersCollection.DeleteOneAsync(u => u.Id == user.Id);
+            await _redisCache.RemoveAsync("allusers");
             return user;
         }
     }
