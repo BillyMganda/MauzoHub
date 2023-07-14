@@ -20,7 +20,9 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
         public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if(request is null)
+            var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
+
+            if (findUserByEmail is not null)
             {
                 var errorLog = new ErrorLog
                 {
@@ -31,11 +33,13 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                 };
                 Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
 
-                throw new BadRequestException("Bad request!");
+                throw new BadRequestException("Email registered");
             }
 
+            
             try
-            {
+            {                
+
                 (string salt, string hash) = GenerateSaltAndHash(request.Password);
 
                 var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, request.Role);

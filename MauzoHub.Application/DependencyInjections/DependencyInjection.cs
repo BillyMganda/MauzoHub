@@ -21,8 +21,8 @@ namespace MauzoHub.Application.DependencyInjections
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.MongoDB(connectionString +"/" + databaseName, collectionName)
-                .CreateLogger();
+                .WriteTo.MongoDB(connectionString +"/"+ databaseName, collectionName)
+                .CreateLogger();            
         }
     }
 }
