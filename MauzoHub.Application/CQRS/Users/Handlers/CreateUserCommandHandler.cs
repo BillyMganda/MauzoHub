@@ -22,7 +22,15 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
         {
             if(request is null)
             {
-                Log.Error("request is null");
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "400",
+                    ErrorMessage = "Bad request!",
+                    IPAddress = "127.0.0.1",
+                };
+                Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
+
                 throw new BadRequestException("Bad request!");
             }
 
@@ -46,7 +54,15 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "an internal server error occured, logged by serilog");
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "500",
+                    ErrorMessage = ex.Message,
+                    IPAddress = "127.0.0.1",
+                };
+                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);                
+
                 throw;
             }
         }
