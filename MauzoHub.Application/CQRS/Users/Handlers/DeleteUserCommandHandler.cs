@@ -24,6 +24,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
 
             var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
+            var httpMethod = httpContext.Request.Method;
 
             if (request.Id == Guid.Empty)
             {
@@ -34,6 +35,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = "Bad request",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
                 };
                 Log.Error("An error occurred while processing the command, Invalid request Id: {@ErrorLog}", errorLog);
 
@@ -52,6 +54,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                         ErrorMessage = $"user with id {request.Id} not found",
                         IPAddress = remoteIpAddress.ToString(),
                         ActionUrl = actionUrl,
+                        HttpMethod= httpMethod,
                     };
 
                     throw new NotFoundException($"user with id {request.Id} not found");
@@ -70,6 +73,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = ex.Message,
                     IPAddress = remoteIpAddress.ToString(),
                     ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
                 };
                 Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);
 

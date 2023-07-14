@@ -27,6 +27,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
 
             var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
+            var httpMethod = httpContext.Request.Method;
 
             var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
 
@@ -39,6 +40,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = $"user with email {request.Email} already exists",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
                 };
                 Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
 
@@ -73,6 +75,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = ex.Message,
                     IPAddress = remoteIpAddress.ToString(),
                     ActionUrl = actionUrl,
+                    HttpMethod= httpMethod,
                 };
                 Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);                
 
