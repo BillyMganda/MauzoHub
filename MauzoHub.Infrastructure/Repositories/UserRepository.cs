@@ -40,7 +40,21 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await _usersCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
+            var cacheKey = $"user_{email}";
+            var cachedUser = await _redisCache.GetAsync<User>(cacheKey);
+            if (cachedUser != null)
+            {
+                return cachedUser;
+            }
+
+            var user = await _usersCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                await _redisCache.SetAsync<User>(cacheKey, user, TimeSpan.FromMinutes(5));
+            }
+
+            return user!;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
