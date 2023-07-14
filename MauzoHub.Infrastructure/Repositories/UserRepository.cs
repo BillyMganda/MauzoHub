@@ -8,19 +8,34 @@ namespace MauzoHub.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoCollection<User> _usersCollection;        
-        public UserRepository(IOptions<MauzoHubDatabaseSettings> databaseSettings)
+        private readonly IMongoCollection<User> _usersCollection;
+        private readonly IRedisCacheProvider _redisCache;
+        public UserRepository(IOptions<MauzoHubDatabaseSettings> databaseSettings, IRedisCacheProvider redisCache)
         {
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
             var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
             _usersCollection = database.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
+
+            _redisCache = redisCache;
         }
 
         public async Task<User> GetByIdAsync(Guid id)
         {
+            var cacheKey = $"user_{id}";
+            var cachedUser = await _redisCache.GetAsync<User>(cacheKey);
+            if (cachedUser != null)
+            {
+                return cachedUser;
+            }
+
             var user = await _usersCollection.Find(user => user.Id == id).FirstOrDefaultAsync();
-            return user;
+            if (user != null)
+            {
+                await _redisCache.SetAsync<User>(cacheKey, user, TimeSpan.FromMinutes(5));
+            }
+
+            return user!;
         }
 
         public async Task<User> GetByEmailAsync(string email)
