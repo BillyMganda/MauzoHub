@@ -42,8 +42,8 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ActionUrl = actionUrl,
                     HttpMethod = httpMethod,
                 };
-                Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
 
+                Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
                 throw new UnprocessableEntityException("Email already registered");
             }
             

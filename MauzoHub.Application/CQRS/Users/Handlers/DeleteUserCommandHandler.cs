@@ -57,6 +57,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                         HttpMethod= httpMethod,
                     };
 
+                    Log.Error($"user with id {request.Id} not found", errorLog);
                     throw new NotFoundException($"user with id {request.Id} not found");
                 }
 
