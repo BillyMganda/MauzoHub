@@ -4,7 +4,9 @@ using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Serilog;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,9 +15,11 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUserDto>
     {
         private readonly IUserRepository _userRepository;
-        public CreateUserCommandHandler(IUserRepository userRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CreateUserCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -24,12 +28,19 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
             if (findUserByEmail is not null)
             {
+                var httpContext = _httpContextAccessor.HttpContext;
+                var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
+
+                var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
+
+
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
                     ErrorCode = "400",
-                    ErrorMessage = "Bad request!",
-                    IPAddress = "127.0.0.1",
+                    ErrorMessage = "Bad request",
+                    IPAddress = remoteIpAddress!.ToString(),
+                    ActionUrl = actionUrl,
                 };
                 Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
 
@@ -69,7 +80,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 throw;
             }
-        }
+        }       
 
         private (string salt, string hash) GenerateSaltAndHash(string password)
         {

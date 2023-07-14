@@ -15,6 +15,11 @@ var configuration = new ConfigurationBuilder()
 builder.Services.ConfigureInfrastructureServices(configuration);
 builder.Services.ConfigureApplicationServices(configuration);
 
+builder.Services.AddHttpContextAccessor();
+
+
+
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
