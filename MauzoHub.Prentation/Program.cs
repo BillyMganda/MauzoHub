@@ -13,7 +13,7 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 builder.Services.ConfigureInfrastructureServices(configuration);
-builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureApplicationServices(configuration);
 
 
 var app = builder.Build();
