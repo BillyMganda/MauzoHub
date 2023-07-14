@@ -59,7 +59,21 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _usersCollection.Find(_ => true).ToListAsync();
+            var cacheKey = "users";
+            var cachedUser = await _redisCache.GetAsync<IEnumerable<User>>(cacheKey);
+            if (cachedUser != null)
+            {
+                return cachedUser;
+            }
+
+            var users = await _usersCollection.Find(_ => true).ToListAsync();
+
+            if (users != null)
+            {
+                await _redisCache.SetAsync(cacheKey, users, TimeSpan.FromMinutes(5));
+            }
+
+            return users!;
         }
 
         public async Task<User> AddAsync(User user)
