@@ -43,7 +43,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                 };
                 Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
 
-                throw new BadRequestException("Email registered");
+                throw new UnprocessableEntityException("Email already registered");
             }
 
             
