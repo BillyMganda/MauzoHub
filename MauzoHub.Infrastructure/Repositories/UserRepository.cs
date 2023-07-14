@@ -8,7 +8,7 @@ namespace MauzoHub.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoCollection<User> _usersCollection;
+        private readonly IMongoCollection<User> _usersCollection;        
         public UserRepository(IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);

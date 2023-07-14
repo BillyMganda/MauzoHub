@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using MauzoHub.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace MauzoHub.Infrastructure.Databases
-{
-    public class RedisCacheProvider
+{    
+    public class RedisCacheProvider : IRedisCacheProvider
     {
         private readonly IDistributedCache _cache;
         public RedisCacheProvider(IDistributedCache cache)

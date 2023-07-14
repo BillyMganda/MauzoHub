@@ -22,6 +22,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
 
             // Services Injection
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRedisCacheProvider, RedisCacheProvider>();
         }
     }
 }
