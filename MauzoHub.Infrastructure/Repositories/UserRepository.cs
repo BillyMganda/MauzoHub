@@ -59,7 +59,7 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var cacheKey = "users";
+            var cacheKey = "allusers";
             var cachedUser = await _redisCache.GetAsync<IEnumerable<User>>(cacheKey);
             if (cachedUser != null)
             {
@@ -79,6 +79,7 @@ namespace MauzoHub.Infrastructure.Repositories
         public async Task<User> AddAsync(User user)
         {
             await _usersCollection.InsertOneAsync(user);
+            await _redisCache.RemoveAsync("allusers");
             return user;
         }
 
