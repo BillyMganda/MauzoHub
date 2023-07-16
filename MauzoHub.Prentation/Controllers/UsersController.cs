@@ -46,7 +46,7 @@ namespace MauzoHub.Prentation.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {            
             var user = await _mediator.Send(command);
@@ -60,6 +60,14 @@ namespace MauzoHub.Prentation.Controllers
             var command = new DeleteUserCommand { Id = id };
             await _mediator.Send(command);
             return NoContent();
+        }
+
+        [HttpPut("disable")]
+        public async Task<IActionResult> DisableUser(DisableUserCommand command)
+        {            
+            var user = await _mediator.Send(command);
+
+            return Ok(user);
         }
     }
 }
