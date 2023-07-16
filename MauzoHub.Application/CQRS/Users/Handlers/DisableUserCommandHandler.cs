@@ -1,27 +1,24 @@
 ﻿using MauzoHub.Application.CQRS.Users.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
-using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace MauzoHub.Application.CQRS.Users.Handlers
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUserDto>
+    public class DisableUserCommandHandler : IRequestHandler<DisableUserCommand, GetUserDto>
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public CreateUserCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public DisableUserCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<GetUserDto> Handle(DisableUserCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -29,39 +26,48 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
             var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
             var httpMethod = httpContext.Request.Method;
 
-            var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
-
-            if (findUserByEmail is not null)
-            {              
+            if (request.Id == Guid.Empty)
+            {
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
-                    ErrorCode = "422",
-                    ErrorMessage = $"user with email {request.Email} already exists",
+                    ErrorCode = "400",
+                    ErrorMessage = "Bad request",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
                     HttpMethod = httpMethod,
                 };
+                Log.Error("An error occurred while processing the command, Invalid request Id: {@ErrorLog}", errorLog);
 
-                Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
-                throw new UnprocessableEntityException("Email already registered");
+                throw new BadRequestException("Invalid request Id");
             }
-            
             try
-            {                
+            {
+                var user = await _userRepository.GetByIdAsync(request.Id);
+                if (user == null)
+                {
+                    var errorLog = new ErrorLog
+                    {
+                        DateTime = DateTime.Now,
+                        ErrorCode = "404",
+                        ErrorMessage = $"user with id {request.Id} not found",
+                        IPAddress = remoteIpAddress.ToString(),
+                        ActionUrl = actionUrl,
+                        HttpMethod = httpMethod,
+                    };
 
-                (string salt, string hash) = GenerateSaltAndHash(request.Password);
+                    Log.Error($"user with id {request.Id} not found", errorLog);
+                    throw new NotFoundException($"user with id {request.Id} not found");
+                }
 
-                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, request.Role, true);
-
-                await _userRepository.AddAsync(user);
+                await _userRepository.DisableUser(request.Id);
 
                 var userDto = new GetUserDto
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Email = user.Email
+                    Email = user.Email,
                 };
 
                 return userDto;
@@ -75,23 +81,10 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = ex.Message,
                     IPAddress = remoteIpAddress.ToString(),
                     ActionUrl = actionUrl,
-                    HttpMethod= httpMethod,
+                    HttpMethod = httpMethod,
                 };
-                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);                
-
+                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);
                 throw;
-            }
-        }       
-
-        private (string salt, string hash) GenerateSaltAndHash(string password)
-        {
-            using (var hmac = new HMACSHA256())
-            {
-                var salt = Convert.ToBase64String(hmac.Key);
-                var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var hash = Convert.ToBase64String(hashBytes);
-
-                return (salt, hash);
             }
         }
     }
