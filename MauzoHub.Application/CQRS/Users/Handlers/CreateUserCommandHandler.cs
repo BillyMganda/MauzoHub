@@ -52,7 +52,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 (string salt, string hash) = GenerateSaltAndHash(request.Password);
 
-                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, request.Role);
+                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, request.Role, true);
 
                 await _userRepository.AddAsync(user);
 
