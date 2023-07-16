@@ -111,5 +111,20 @@ namespace MauzoHub.Infrastructure.Repositories
 
             return false;
         }
+
+        public async Task<bool> EnableUser(Guid Id)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, Id);
+            var update = Builders<User>.Update.Set(u => u.isActive, true);
+            var result = await _usersCollection.UpdateOneAsync(filter, update);
+
+            if (result.ModifiedCount > 0)
+            {
+                await _redisCache.RemoveAsync("allusers");
+                return true;
+            }
+
+            return false;
+        }
     }
 }
