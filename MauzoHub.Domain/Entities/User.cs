@@ -8,13 +8,14 @@
         public string PasswordSalt { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;        
         public string Role { get; set; } = string.Empty;
+        public bool isActive { get; set; }
 
         public User()
         {
 
         }
 
-        public User(string firstName, string lastName, string email, string passwordSalt, string passwordHash, string role)
+        public User(string firstName, string lastName, string email, string passwordSalt, string passwordHash, string role, bool _isActive)
         {
             Id = Guid.NewGuid();
             DateCreated = DateTime.Now;
@@ -25,6 +26,7 @@
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
             Role = role;
+            isActive = _isActive;
         }
     }
 }
