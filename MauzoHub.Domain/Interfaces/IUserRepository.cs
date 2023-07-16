@@ -6,5 +6,6 @@ namespace MauzoHub.Domain.Interfaces
     {        
         Task<User> GetByEmailAsync(string email);
         Task<bool> DisableUser(Guid Id);
+        Task<bool> EnableUser(Guid Id);
     }
 }
