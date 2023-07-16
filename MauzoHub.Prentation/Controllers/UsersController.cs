@@ -69,5 +69,13 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(user);
         }
+
+        [HttpPut("enable")]
+        public async Task<IActionResult> EnableUser(EnableUserCommand command)
+        {
+            var user = await _mediator.Send(command);
+
+            return Ok(user);
+        }
     }
 }
