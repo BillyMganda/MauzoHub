@@ -1,4 +1,9 @@
-﻿using MauzoHub.Domain.Interfaces;
+﻿using MauzoHub.Application.DTOs;
+using MauzoHub.Domain.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MauzoHub.Infrastructure.Repositories
 {
@@ -9,9 +14,38 @@ namespace MauzoHub.Infrastructure.Repositories
         {
             _userRepository = userRepository;
         }
-        public Task<T> LoginAsync(V LoginRequest)
+
+        private string GenerateJwtToken(string userId, string userRole)
         {
-            throw new NotImplementedException();
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_secret_key_here"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Role, userRole)
+                };
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "your_issuer",
+                audience: "your_audience",
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: credentials
+                );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return tokenString;
+        }
+        public async Task<T> LoginAsync(LoginRequestDto LoginRequest)
+        {
+            var user = await _userRepository.GetByEmailAsync(LoginRequest.Email);
+            var userId = user.Id.ToString();
+            var userRole = user.Role;
+
+            var token = GenerateJwtToken(userId, userRole);
+
+            return Task.FromResult<T>(token);
         }
 
         public Task<T> LogoutAsync(X LogoutRequest)
