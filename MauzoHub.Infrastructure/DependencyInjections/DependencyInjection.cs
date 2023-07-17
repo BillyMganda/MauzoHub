@@ -48,7 +48,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Token").Value!)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Key").Value!)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };

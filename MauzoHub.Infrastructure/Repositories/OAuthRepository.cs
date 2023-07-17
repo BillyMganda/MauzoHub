@@ -39,13 +39,15 @@ namespace MauzoHub.Infrastructure.Repositories
         }
         public async Task<T> LoginAsync(LoginRequestDto LoginRequest)
         {
-            var user = await _userRepository.GetByEmailAsync(LoginRequest.Email);
-            var userId = user.Id.ToString();
-            var userRole = user.Role;
+            //var user = await _userRepository.GetByEmailAsync(LoginRequest.Email);
+            //var userId = user.Id.ToString();
+            //var userRole = user.Role;
 
-            var token = GenerateJwtToken(userId, userRole);
+            //var token = GenerateJwtToken(userId, userRole);
 
-            return Task.FromResult<T>(token);
+            //return Task.FromResult<T>(token);
+
+            throw new NotImplementedException();
         }
 
         public Task<T> LogoutAsync(X LogoutRequest)
@@ -64,6 +66,11 @@ namespace MauzoHub.Infrastructure.Repositories
         }
 
         public Task<T> ResetPasswordAsync(Z ResetPasswordRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> LoginAsync(V LoginRequest)
         {
             throw new NotImplementedException();
         }

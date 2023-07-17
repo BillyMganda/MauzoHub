@@ -20,18 +20,14 @@ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 // MINE
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
+app.UseAuthentication();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseAuthentication();
 app.MapControllers();
 app.Run();
