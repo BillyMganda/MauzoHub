@@ -19,8 +19,6 @@ builder.Services.AddHttpContextAccessor();
 
 
 
-
-
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
@@ -34,5 +32,6 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllers();
 app.Run();
