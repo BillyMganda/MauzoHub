@@ -48,12 +48,12 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 throw new NotFoundException("User not found");
             }
 
-            else if (user.isActive == false)
+            if (user.isActive == false)
             {
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
-                    ErrorCode = "400",
+                    ErrorCode = "403",
                     ErrorMessage = "User not active",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
@@ -61,7 +61,7 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 };
                 Log.Error("An error occurred while processing the command, user inactive: {@ErrorLog}", errorLog);
 
-                throw new BadRequestException("User not active");
+                throw new ForbiddenException("User not active");
             }
 
             try
