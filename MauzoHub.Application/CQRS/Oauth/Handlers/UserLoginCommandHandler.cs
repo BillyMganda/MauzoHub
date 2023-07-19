@@ -5,7 +5,6 @@ using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
-using System.Text;
 
 namespace MauzoHub.Application.CQRS.Oauth.Handlers
 {
