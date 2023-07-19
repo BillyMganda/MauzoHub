@@ -6,6 +6,6 @@ namespace MauzoHub.Domain.Interfaces
     {
         void CreatePasswordHash(string password, out string passwordHash, out string passwordSalt);        
         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
-        string CreateJwtToken(LoginRequest request);
+        string CreateJwtToken(string email);
     }
 }
