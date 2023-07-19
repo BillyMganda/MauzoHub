@@ -1,9 +1,12 @@
 ﻿using MauzoHub.Domain.Interfaces;
 using MauzoHub.Infrastructure.Databases;
 using MauzoHub.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
 
 namespace MauzoHub.Infrastructure.DependencyInjections
 {
@@ -39,6 +42,38 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             // Services Injection
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRedisCacheProvider, RedisCacheProvider>();
+            services.AddScoped<IOauthRepository, OauthRepository>();
+
+            // JWT
+            services.AddAuthentication(x => {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o => {
+                var Key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]!);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false, // on production make it true
+                    ValidateAudience = false, // on production make it true
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidAudience = configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Key),
+                    ClockSkew = TimeSpan.Zero
+                };
+                o.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context => {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
         }
     }
 }
