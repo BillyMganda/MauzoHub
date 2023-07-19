@@ -48,15 +48,28 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 throw new NotFoundException("User not found");
             }
 
+            else if (user.isActive == false)
+            {
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "400",
+                    ErrorMessage = "User not active",
+                    IPAddress = remoteIpAddress!.ToString(),
+                    ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
+                };
+                Log.Error("An error occurred while processing the command, user inactive: {@ErrorLog}", errorLog);
+
+                throw new BadRequestException("User not active");
+            }
+
             try
             {
-                // verify password
-                byte[] passwordSalt = Encoding.UTF8.GetBytes(user.PasswordSalt);
-                byte[] passwordHash = Encoding.UTF8.GetBytes(user.PasswordHash);
+                // verify password    
+                var isPasswordCorrect = _oauthRepository.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt);
 
-                var isPasswordCorrect = _oauthRepository.VerifyPasswordHash(request.Password, passwordHash, passwordSalt);
-
-                if(!isPasswordCorrect)
+                if(isPasswordCorrect == false)
                 {
                     var errorLog = new ErrorLog
                     {
@@ -71,10 +84,12 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
 
                     throw new BadRequestException("Invalid email or password");
                 }
+                else
+                {
+                    var Token = _oauthRepository.CreateJwtToken(request.Email);
 
-                var Token = _oauthRepository.CreateJwtToken(request.Email);
-
-                return Token;
+                    return Token;
+                }                
             }
             catch (Exception ex)
             {

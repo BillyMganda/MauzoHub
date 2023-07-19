@@ -28,12 +28,15 @@ namespace MauzoHub.Infrastructure.Repositories
             }
         }                       
 
-        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {            
-            using (var hmac = new HMACSHA256(passwordSalt))
+        public bool VerifyPasswordHash(string password, string passwordHash, string passwordSalt)
+        {
+            byte[] saltBytes = Convert.FromBase64String(passwordSalt);
+            byte[] hashBytes = Convert.FromBase64String(passwordHash);
+
+            using (var hmac = new HMACSHA256(saltBytes))
             {
-                var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computeHash.SequenceEqual(passwordHash);
+                byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(hashBytes);
             }
         }
 
