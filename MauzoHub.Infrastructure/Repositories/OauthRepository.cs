@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -69,7 +71,27 @@ namespace MauzoHub.Infrastructure.Repositories
         }
         public async Task SendPasswordResetTokenEmailAsync(string email, string resetToken)
         {
+            var smtpServer = _configuration.GetSection("SmtpSettings:SmtpServer").Value!;
+            var smtpPort = Convert.ToInt32(_configuration.GetSection("SmtpSettings:SmtpPort").Value!);
+            var smtpUsername = _configuration.GetSection("SmtpSettings:SsmtpUsername").Value!;
+            var smtpPassword = _configuration.GetSection("SmtpSettings:SmtpPassword").Value!;            
 
+            using (var mailMessage = new MailMessage())
+            {
+                mailMessage.From = new MailAddress(smtpUsername);
+                mailMessage.To.Add(email);
+                mailMessage.Subject = "Password Reset Token";
+                mailMessage.Body = $"Your password reset token is: {resetToken}";
+
+                using (var smtpClient = new SmtpClient(smtpServer, smtpPort))
+                {
+                    smtpClient.UseDefaultCredentials = false;
+                    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                    smtpClient.EnableSsl = true;
+                    
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+            }
         }
 
         public Task<bool> ValidatePasswordResetTokenAsync(string email, string token)
