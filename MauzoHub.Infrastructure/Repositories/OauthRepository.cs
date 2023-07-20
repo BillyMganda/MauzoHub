@@ -119,9 +119,9 @@ namespace MauzoHub.Infrastructure.Repositories
             await _userRepository.UpdateAsync(user);
         }
 
-        public async Task<bool> ValidatePasswordResetTokenAsync(string email, string token)
+        public async Task<bool> ValidatePasswordResetTokenAsync(string token)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByTokenAsync(token);
 
             if (user == null || !string.Equals(user.PasswordResetToken, token, StringComparison.Ordinal))
             {
@@ -137,14 +137,7 @@ namespace MauzoHub.Infrastructure.Repositories
         }
 
         public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
-        {
-            var isValidToken = await ValidatePasswordResetTokenAsync(email, token);
-
-            if (!isValidToken)
-            {                
-                return false;
-            }
-
+        {            
             var user = await _userRepository.GetByEmailAsync(email);
 
             (string salt, string hash) = GenerateSaltAndHash(newPassword);
