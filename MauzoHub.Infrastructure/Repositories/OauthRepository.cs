@@ -75,7 +75,7 @@ namespace MauzoHub.Infrastructure.Repositories
         // Forgot Password
         public string GeneratePasswordResetTokenAsync(string email)
         {
-            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
             var resetToken = new string(Enumerable.Repeat(characters, 6)
                                             .Select(s => s[random.Next(s.Length)])
@@ -115,8 +115,7 @@ namespace MauzoHub.Infrastructure.Repositories
             user.LastModified = DateTime.Now;
             user.PasswordResetToken = token;
             user.ResetTokenExpiration = DateTime.Now.AddMinutes(30);
-
-            //await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            
             await _userRepository.UpdateAsync(user);
         }
 
