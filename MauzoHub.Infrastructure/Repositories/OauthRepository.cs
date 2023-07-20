@@ -136,9 +136,9 @@ namespace MauzoHub.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
-        {            
-            var user = await _userRepository.GetByEmailAsync(email);
+        public async Task<bool> ResetPasswordAsync(string token, string newPassword)
+        {
+            var user = await _userRepository.GetByTokenAsync(token);
 
             (string salt, string hash) = GenerateSaltAndHash(newPassword);
 
