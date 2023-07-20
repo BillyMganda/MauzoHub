@@ -9,6 +9,7 @@
 
         // Forgot Password
         Task<string> GeneratePasswordResetTokenAsync(string email);
+        Task SendPasswordResetTokenEmailAsync(string email, string resetToken);
         Task<bool> ValidatePasswordResetTokenAsync(string email, string token);
         Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
     }

@@ -1,5 +1,4 @@
-﻿using MauzoHub.Domain.DTOs;
-using MauzoHub.Domain.Interfaces;
+﻿using MauzoHub.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -57,6 +56,30 @@ namespace MauzoHub.Infrastructure.Repositories
 
             string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
+        }
+
+        public Task<string> GeneratePasswordResetTokenAsync(string email)
+        {
+            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var resetToken = new string(Enumerable.Repeat(characters, 6)
+                                            .Select(s => s[random.Next(s.Length)])
+                                            .ToArray());
+            return Task.FromResult(resetToken);
+        }
+        public async Task SendPasswordResetTokenEmailAsync(string email, string resetToken)
+        {
+
+        }
+
+        public Task<bool> ValidatePasswordResetTokenAsync(string email, string token)
+        {
+
+        }
+
+        public Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
+        {
+
         }
     }
 }
