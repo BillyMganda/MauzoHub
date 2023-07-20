@@ -48,6 +48,22 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 throw new NotFoundException("404: User not found");
             }
 
+            if(findUserByEmail.isActive == false)
+            {
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "403",
+                    ErrorMessage = $"user with email {request.Email} not active",
+                    IPAddress = remoteIpAddress!.ToString(),
+                    ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
+                };
+
+                Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
+                throw new ForbiddenException("403: User not active");
+            }
+
             try
             {
                 var token = _oauthRepository.GeneratePasswordResetTokenAsync(request.Email);
