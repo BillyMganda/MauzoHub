@@ -73,28 +73,30 @@ namespace MauzoHub.Infrastructure.Repositories
         }
 
         // Forgot Password
-        public Task<string> GeneratePasswordResetTokenAsync(string email)
+        public string GeneratePasswordResetTokenAsync(string email)
         {
             const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
             var resetToken = new string(Enumerable.Repeat(characters, 6)
                                             .Select(s => s[random.Next(s.Length)])
                                             .ToArray());
-            return Task.FromResult(resetToken);
+            return resetToken;
         }
-        public async Task SendPasswordResetTokenEmailAsync(string email, string resetToken)
+        public async Task SendPasswordResetTokenEmailAsync(string email)
         {
             var smtpServer = _configuration.GetSection("SmtpSettings:SmtpServer").Value!;
             var smtpPort = Convert.ToInt32(_configuration.GetSection("SmtpSettings:SmtpPort").Value!);
             var smtpUsername = _configuration.GetSection("SmtpSettings:SsmtpUsername").Value!;
-            var smtpPassword = _configuration.GetSection("SmtpSettings:SmtpPassword").Value!;            
+            var smtpPassword = _configuration.GetSection("SmtpSettings:SmtpPassword").Value!;
+
+            string token = GeneratePasswordResetTokenAsync(email);
 
             using (var mailMessage = new MailMessage())
             {
                 mailMessage.From = new MailAddress(smtpUsername);
                 mailMessage.To.Add(email);
                 mailMessage.Subject = "Password Reset Token";
-                mailMessage.Body = $"Your password reset token is: {resetToken}";
+                mailMessage.Body = $"Your password reset token is: {token}";
 
                 using (var smtpClient = new SmtpClient(smtpServer, smtpPort))
                 {
