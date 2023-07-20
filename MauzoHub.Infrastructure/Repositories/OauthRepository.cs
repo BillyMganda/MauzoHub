@@ -145,6 +145,8 @@ namespace MauzoHub.Infrastructure.Repositories
             user.PasswordSalt = salt;
             user.PasswordHash = hash;
             user.LastModified = DateTime.Now;
+            user.PasswordResetToken = "";
+            user.ResetTokenExpiration = DateTime.MinValue;
 
             await _userRepository.UpdateAsync(user);            
         }
