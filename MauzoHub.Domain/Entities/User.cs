@@ -9,6 +9,8 @@
         public string PasswordHash { get; set; } = string.Empty;        
         public string Role { get; set; } = string.Empty;
         public bool isActive { get; set; }
+        public string PasswordResetToken { get; set; } = string.Empty;
+        public DateTime ResetTokenExpiration { get; set; }
 
         public User()
         {

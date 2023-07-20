@@ -1,6 +1,10 @@
-﻿using MauzoHub.Domain.Interfaces;
+﻿using MauzoHub.Domain.Entities;
+using MauzoHub.Domain.Interfaces;
+using MauzoHub.Infrastructure.Databases;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
@@ -13,12 +17,20 @@ namespace MauzoHub.Infrastructure.Repositories
     public class OauthRepository : IOauthRepository    {
         
         private readonly IConfiguration _configuration;
-        public OauthRepository(IConfiguration configuration)
+        private readonly IUserRepository _userRepository;
+        private readonly IMongoCollection<User> _usersCollection;
+        public OauthRepository(IConfiguration configuration, IUserRepository userRepository, IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
-            
             _configuration = configuration;
+            _userRepository = userRepository;
+
+            var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
+            var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
+
+            _usersCollection = database.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
         }
 
+        // Login
         public void CreatePasswordHash(string password, out string passwordHash, out string passwordSalt)
         {
             using (var hmac = new HMACSHA256())
@@ -60,6 +72,7 @@ namespace MauzoHub.Infrastructure.Repositories
             return jwtToken;
         }
 
+        // Forgot Password
         public Task<string> GeneratePasswordResetTokenAsync(string email)
         {
             const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -94,14 +107,67 @@ namespace MauzoHub.Infrastructure.Repositories
             }
         }
 
-        public Task<bool> ValidatePasswordResetTokenAsync(string email, string token)
+        public async Task UpdateResetTokenFieldInDatabase(string email, string token)
         {
+            var user = await _userRepository.GetByEmailAsync(email);
 
+            user.LastModified = DateTime.Now;
+            user.PasswordResetToken = token;
+            user.ResetTokenExpiration = DateTime.Now.AddMinutes(30);
+
+            //await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            await _userRepository.UpdateAsync(user);
         }
 
-        public Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
+        public async Task<bool> ValidatePasswordResetTokenAsync(string email, string token)
         {
+            var user = await _userRepository.GetByEmailAsync(email);
 
+            if (user == null || !string.Equals(user.PasswordResetToken, token, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            if (DateTime.Now > user.ResetTokenExpiration)
+            {                
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
+        {
+            var isValidToken = await ValidatePasswordResetTokenAsync(email, token);
+
+            if (!isValidToken)
+            {                
+                return false;
+            }
+
+            var user = await _userRepository.GetByEmailAsync(email);
+
+            (string salt, string hash) = GenerateSaltAndHash(newPassword);
+
+            user.PasswordSalt = salt;
+            user.PasswordHash = hash;
+            user.LastModified = DateTime.Now;
+
+            await _userRepository.UpdateAsync(user);
+
+            return true;
+        }
+
+        private (string salt, string hash) GenerateSaltAndHash(string password)
+        {
+            using (var hmac = new HMACSHA256())
+            {
+                var salt = Convert.ToBase64String(hmac.Key);
+                var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                var hash = Convert.ToBase64String(hashBytes);
+
+                return (salt, hash);
+            }
         }
     }
 }
