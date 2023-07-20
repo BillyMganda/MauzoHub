@@ -136,7 +136,7 @@ namespace MauzoHub.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> ResetPasswordAsync(string token, string newPassword)
+        public async Task ResetPasswordAsync(string token, string newPassword)
         {
             var user = await _userRepository.GetByTokenAsync(token);
 
@@ -146,9 +146,7 @@ namespace MauzoHub.Infrastructure.Repositories
             user.PasswordHash = hash;
             user.LastModified = DateTime.Now;
 
-            await _userRepository.UpdateAsync(user);
-
-            return true;
+            await _userRepository.UpdateAsync(user);            
         }
 
         private (string salt, string hash) GenerateSaltAndHash(string password)

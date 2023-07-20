@@ -12,6 +12,6 @@
         Task SendPasswordResetTokenEmailAsync(string email, string token);
         Task UpdateResetTokenFieldInDatabase(string email, string token);
         Task<bool> ValidatePasswordResetTokenAsync(string token);
-        Task<bool> ResetPasswordAsync(string token, string newPassword);
+        Task ResetPasswordAsync(string token, string newPassword);
     }
 }
