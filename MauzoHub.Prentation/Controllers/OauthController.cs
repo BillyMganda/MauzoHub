@@ -25,7 +25,14 @@ namespace MauzoHub.Prentation.Controllers
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
         {
             await _mediator.Send(command);
-            return Ok("operation successful");
+            return Ok("reset password code sent to your email");
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("password reset successfully");
         }
     }
 }
