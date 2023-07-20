@@ -14,11 +14,18 @@ namespace MauzoHub.Prentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginCommand command)
         {
             var Token = await _mediator.Send(command);
             return Ok(Token);  
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("operation successful");
         }
     }
 }

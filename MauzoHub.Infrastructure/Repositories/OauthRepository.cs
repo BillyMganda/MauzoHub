@@ -82,14 +82,13 @@ namespace MauzoHub.Infrastructure.Repositories
                                             .ToArray());
             return resetToken;
         }
-        public async Task SendPasswordResetTokenEmailAsync(string email)
+        public async Task SendPasswordResetTokenEmailAsync(string email, string token)
         {
             var smtpServer = _configuration.GetSection("SmtpSettings:SmtpServer").Value!;
             var smtpPort = Convert.ToInt32(_configuration.GetSection("SmtpSettings:SmtpPort").Value!);
             var smtpUsername = _configuration.GetSection("SmtpSettings:SsmtpUsername").Value!;
             var smtpPassword = _configuration.GetSection("SmtpSettings:SmtpPassword").Value!;
-
-            string token = GeneratePasswordResetTokenAsync(email);
+            
 
             using (var mailMessage = new MailMessage())
             {
