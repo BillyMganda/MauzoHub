@@ -8,19 +8,19 @@ using Serilog;
 
 namespace MauzoHub.Application.CQRS.Oauth.Handlers
 {
-    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, string>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOauthRepository _oauthRepository;
-        public UserLoginCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IOauthRepository oauthRepository)
+        public LoginCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IOauthRepository oauthRepository)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
             _oauthRepository = oauthRepository;
         }
 
-        public async Task<string> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;

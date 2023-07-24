@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MauzoHub.Application.CQRS.Oauth.Commands
 {
-    public class UserLoginCommand : IRequest<string>
+    public class LoginCommand : IRequest<string>
     {
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
