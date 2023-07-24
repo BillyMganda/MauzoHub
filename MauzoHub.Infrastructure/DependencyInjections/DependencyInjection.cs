@@ -48,7 +48,8 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o => {
+            })
+                .AddJwtBearer(o => {
                 var Key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]!);
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
@@ -72,7 +73,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                         return Task.CompletedTask;
                     }
                 };
-            });
+            });            
 
         }
     }
