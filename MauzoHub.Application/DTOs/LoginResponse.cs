@@ -1,4 +1,4 @@
-﻿namespace MauzoHub.Domain.Entities
+﻿namespace MauzoHub.Application.DTOs
 {
     public class LoginResponse
     {
