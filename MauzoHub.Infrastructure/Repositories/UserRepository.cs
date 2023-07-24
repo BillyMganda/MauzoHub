@@ -86,6 +86,7 @@ namespace MauzoHub.Infrastructure.Repositories
         public async Task<User> UpdateAsync(User user)
         {
             await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            // TODO: Work on radis caching 'allusers' key
             await _redisCache.RemoveAsync("allusers");
             return user;
         }
@@ -125,6 +126,25 @@ namespace MauzoHub.Infrastructure.Repositories
             }
 
             return false;
+        }
+
+        public async Task<User> GetByTokenAsync(string token)
+        {
+            var cacheKey = $"user_{token}";
+            var cachedUser = await _redisCache.GetAsync<User>(cacheKey);
+            if (cachedUser != null)
+            {
+                return cachedUser;
+            }
+
+            var user = await _usersCollection.Find(user => user.PasswordResetToken == token).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                await _redisCache.SetAsync<User>(cacheKey, user, TimeSpan.FromSeconds(5));
+            }
+
+            return user!;
         }
     }
 }
