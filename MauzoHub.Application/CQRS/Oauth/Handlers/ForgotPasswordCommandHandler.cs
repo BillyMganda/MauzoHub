@@ -30,9 +30,9 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
             var actionUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
             var httpMethod = httpContext.Request.Method;
 
-            var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
+            var user = await _userRepository.GetByEmailAsync(request.Email);
 
-            if (findUserByEmail is null)
+            if (user is null)
             {
                 var errorLog = new ErrorLog
                 {
@@ -48,7 +48,7 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 throw new NotFoundException("404: User not found");
             }
 
-            if(findUserByEmail.isActive == false)
+            if(user.isActive == false)
             {
                 var errorLog = new ErrorLog
                 {
