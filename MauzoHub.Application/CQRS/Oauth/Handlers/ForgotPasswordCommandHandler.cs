@@ -66,9 +66,8 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
 
             try
             {
-                var token = _oauthRepository.GeneratePasswordResetTokenAsync(request.Email);
-                // TODO: Activate this
-                //await _oauthRepository.SendPasswordResetTokenEmailAsync(request.Email, token);
+                var token = _oauthRepository.GeneratePasswordResetTokenAsync(request.Email);                
+                await _oauthRepository.SendPasswordResetTokenEmailAsync(request.Email, token);
                 await _oauthRepository.UpdateResetTokenFieldInDatabase(request.Email, token);
             }
             catch (Exception ex)

@@ -86,6 +86,7 @@ namespace MauzoHub.Infrastructure.Repositories
         public async Task<User> UpdateAsync(User user)
         {
             await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            // TODO: Work on radis caching 'allusers' key
             await _redisCache.RemoveAsync("allusers");
             return user;
         }
@@ -140,7 +141,7 @@ namespace MauzoHub.Infrastructure.Repositories
 
             if (user != null)
             {
-                await _redisCache.SetAsync<User>(cacheKey, user, TimeSpan.FromMinutes(5));
+                await _redisCache.SetAsync<User>(cacheKey, user, TimeSpan.FromSeconds(5));
             }
 
             return user!;
