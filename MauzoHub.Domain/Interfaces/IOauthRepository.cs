@@ -8,7 +8,7 @@
         string CreateJwtToken(string email);
 
         string GenerateRefreshToken();
-        bool ValidateRefreshToken(string token);
+        Task<bool> ValidateRefreshToken(string token);
 
         // Forgot Password
         string GeneratePasswordResetTokenAsync(string email);

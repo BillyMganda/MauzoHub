@@ -18,7 +18,7 @@ namespace MauzoHub.Infrastructure.Repositories
         
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
-        private readonly IMongoCollection<User> _usersCollection;
+        private readonly IMongoCollection<RefreshTokens> _refreshTokensCollection;
         public OauthRepository(IConfiguration configuration, IUserRepository userRepository, IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
             _configuration = configuration;
@@ -27,7 +27,7 @@ namespace MauzoHub.Infrastructure.Repositories
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
             var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
-            _usersCollection = database.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
+            _refreshTokensCollection = database.GetCollection<RefreshTokens>(databaseSettings.Value.RefreshTokensCollectionName);
         }
 
         // Login
@@ -80,10 +80,14 @@ namespace MauzoHub.Infrastructure.Repositories
             return Convert.ToBase64String(randomNumber);
         }
 
-        public bool ValidateRefreshToken(string token)
+        public async Task<bool> ValidateRefreshToken(string token)
         {
-            //var user = await _userRepository.GetByTokenAsync(token);
-            //TODO: return valid or invalid
+            var refreshToken = await _refreshTokensCollection.Find(t => t.Token == token).FirstOrDefaultAsync();
+            if(refreshToken == null || refreshToken.IsActive == false)
+            {
+                return false;
+            }
+
             return true;
         }
 

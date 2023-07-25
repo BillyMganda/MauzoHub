@@ -20,6 +20,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.ConnectionString = configuration.GetSection("MauzoHubDatabase:ConnectionString").Value!;
                 options.DatabaseName = configuration.GetSection("MauzoHubDatabase:DatabaseName").Value!;
                 options.UsersCollectionName = configuration.GetSection("MauzoHubDatabase:UsersCollectionName").Value!;
+                options.RefreshTokensCollectionName = configuration.GetSection("MauzoHubDatabase:RefreshTokensCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 
