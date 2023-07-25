@@ -84,7 +84,7 @@ namespace MauzoHub.Infrastructure.Repositories
         {
             var refreshToken = await _refreshTokensCollection.Find(t => t.Token == token).FirstOrDefaultAsync();
             // TODO: Check if this if statemet is correct
-            if(refreshToken == null || refreshToken.IsActive == false || refreshToken.ExpiryDate > DateTime.Now)
+            if(refreshToken == null || refreshToken.IsActive == false || refreshToken.ExpiryDate < DateTime.Now)
             {
                 return false;
             }
