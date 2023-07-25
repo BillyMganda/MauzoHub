@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\BusinessCategories\Handlers\" />
     <Folder Include="CQRS\BusinessCategories\Queries\" />
   </ItemGroup>
 

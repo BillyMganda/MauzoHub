@@ -40,6 +40,12 @@ namespace MauzoHub.Infrastructure.Repositories
             return category;
         }
 
+        public async Task<BusinessCategories> FindByName(string name)
+        {
+            var category = await _businessCategoriesCollection.Find(c => c.CategoryName == name).FirstOrDefaultAsync();
+            return category;
+        }
+
         public async Task<BusinessCategories> UpdateAsync(BusinessCategories entity)
         {
             await _businessCategoriesCollection.ReplaceOneAsync(c => c.Id == entity.Id, entity);
