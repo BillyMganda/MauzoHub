@@ -1,4 +1,6 @@
-﻿namespace MauzoHub.Domain.Interfaces
+﻿using MauzoHub.Domain.Entities;
+
+namespace MauzoHub.Domain.Interfaces
 {
     public interface IOauthRepository
     {
@@ -9,7 +11,7 @@
 
         string GenerateRefreshToken();
         Task<bool> ValidateRefreshToken(string token);
-        Task SaveRefreshRoken();
+        Task<RefreshTokens> SaveRefreshRoken(RefreshTokens refreshToken);
 
         // Forgot Password
         string GeneratePasswordResetTokenAsync(string email);

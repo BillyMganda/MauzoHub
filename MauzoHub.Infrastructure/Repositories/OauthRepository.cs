@@ -91,7 +91,11 @@ namespace MauzoHub.Infrastructure.Repositories
 
             return true;
         }
-
+        public async Task<RefreshTokens> SaveRefreshRoken(RefreshTokens refreshToken)
+        {
+            await _refreshTokensCollection.InsertOneAsync(refreshToken);
+            return refreshToken;
+        }
         // Forgot Password
         public string GeneratePasswordResetTokenAsync(string email)
         {
