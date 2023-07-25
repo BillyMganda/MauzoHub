@@ -9,6 +9,7 @@
 
         string GenerateRefreshToken();
         Task<bool> ValidateRefreshToken(string token);
+        Task SaveRefreshRoken();
 
         // Forgot Password
         string GeneratePasswordResetTokenAsync(string email);
