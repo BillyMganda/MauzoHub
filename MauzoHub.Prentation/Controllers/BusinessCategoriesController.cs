@@ -1,8 +1,6 @@
 ﻿using MauzoHub.Application.CQRS.BusinessCategories.Commands;
-using MauzoHub.Application.CQRS.Users.Commands;
-using MauzoHub.Application.CQRS.Users.Queries;
+using MauzoHub.Application.CQRS.BusinessCategories.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MauzoHub.Prentation.Controllers
@@ -27,7 +25,7 @@ namespace MauzoHub.Prentation.Controllers
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetCategoryById(Guid id)
         {
-            var query = new GetUserByIdQuery { Id = id };
+            var query = new GetCategoryByIdQuery { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }
