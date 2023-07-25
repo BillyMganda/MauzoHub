@@ -17,8 +17,8 @@ namespace MauzoHub.Prentation.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            var Token = await _mediator.Send(command);
-            return Ok(Token);  
+            var Response = await _mediator.Send(command);
+            return Ok(Response);  
         }
 
         [HttpPost("forgot-password")]
