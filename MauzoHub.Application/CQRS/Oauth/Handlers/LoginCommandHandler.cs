@@ -1,6 +1,7 @@
 ﻿using MauzoHub.Application.CQRS.Oauth.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
+using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -85,9 +86,29 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 }
                 else
                 {
-                    var Token = _oauthRepository.CreateJwtToken(request.Email);
+                    var accessToken = _oauthRepository.CreateJwtToken(request.Email);
+                    var refreshToken = _oauthRepository.GenerateRefreshToken();
 
-                    return Token;
+                    // Save Refresh token To database
+                    var refresh_token = new RefreshTokens
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = Guid.NewGuid(),
+                        Token = refreshToken,
+                        ExpiryDate = DateTime.Now.AddDays(7),
+                        CreatedAt = DateTime.Now,
+                        IsActive = true,
+                    };
+                    await _oauthRepository.SaveRefreshRoken(refresh_token);                    
+
+
+                    var loginResponse = new LoginResponse
+                    {
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken,
+                    };
+
+                    return loginResponse;
                 }                
             }
             catch (Exception ex)
