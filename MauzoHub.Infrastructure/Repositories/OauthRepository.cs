@@ -72,6 +72,21 @@ namespace MauzoHub.Infrastructure.Repositories
             return jwtToken;
         }
 
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public bool ValidateRefreshToken(string token)
+        {
+            //var user = await _userRepository.GetByTokenAsync(token);
+            //TODO: return valid or invalid
+            return true;
+        }
+
         // Forgot Password
         public string GeneratePasswordResetTokenAsync(string email)
         {
