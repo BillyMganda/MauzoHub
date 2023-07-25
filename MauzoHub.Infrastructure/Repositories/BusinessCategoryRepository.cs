@@ -1,7 +1,6 @@
 ﻿using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MauzoHub.Infrastructure.Databases;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
