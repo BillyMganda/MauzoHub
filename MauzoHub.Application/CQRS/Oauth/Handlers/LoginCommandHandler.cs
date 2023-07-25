@@ -86,6 +86,7 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 }
                 else
                 {
+                    // Successful Login
                     var accessToken = _oauthRepository.CreateJwtToken(request.Email);
                     var refreshToken = _oauthRepository.GenerateRefreshToken();
 
@@ -93,7 +94,7 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                     var refresh_token = new RefreshTokens
                     {
                         Id = Guid.NewGuid(),
-                        UserId = Guid.NewGuid(),
+                        Email = request.Email,
                         Token = refreshToken,
                         ExpiryDate = DateTime.Now.AddDays(7),
                         CreatedAt = DateTime.Now,
