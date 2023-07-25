@@ -46,7 +46,7 @@ namespace MauzoHub.Application.CQRS.BusinessCategories.Handlers
 
             try
             {
-                var category = new MauzoHub.Domain.Entities.BusinessCategories
+                var category = new Domain.Entities.BusinessCategories
                 {
                     Id = Guid.NewGuid(),
                     DateCreated = DateTime.Now,
