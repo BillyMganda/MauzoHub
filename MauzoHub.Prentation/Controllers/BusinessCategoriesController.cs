@@ -47,5 +47,13 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(category);
         }
+
+        [HttpDelete("id/{id}")]
+        public async Task<IActionResult> DeleteCategory(Guid id)
+        {
+            var command = new DeleteBusinessCategoryCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
     }
 }
