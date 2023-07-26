@@ -79,13 +79,6 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(user);
         }
-
-        [HttpDelete("id/{id}")]
-        public async Task<IActionResult> DeleteBusiness(Guid id)
-        {
-            var command = new DeleteBusinessCommand { Id = id };
-            await _mediator.Send(command);
-            return NoContent();
-        }
+                
     }
 }
