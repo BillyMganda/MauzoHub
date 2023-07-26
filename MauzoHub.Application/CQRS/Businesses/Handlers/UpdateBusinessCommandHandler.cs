@@ -1,7 +1,6 @@
 ﻿using MauzoHub.Application.CQRS.Businesses.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
-using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;

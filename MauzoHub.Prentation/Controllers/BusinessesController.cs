@@ -2,6 +2,7 @@
 using MauzoHub.Application.CQRS.BusinessCategories.Queries;
 using MauzoHub.Application.CQRS.Businesses.Commands;
 using MauzoHub.Application.CQRS.Businesses.Queries;
+using MauzoHub.Application.CQRS.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,14 @@ namespace MauzoHub.Prentation.Controllers
             var query = new GetAllBusinessesQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateBusiness(UpdateBusinessCommand command)
+        {
+            var business = await _mediator.Send(command);
+
+            return Ok(business);
         }
     }
 }
