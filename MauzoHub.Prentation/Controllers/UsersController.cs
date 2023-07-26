@@ -1,4 +1,6 @@
-﻿using MauzoHub.Application.CQRS.Users.Commands;
+﻿using MauzoHub.Application.CQRS.BusinessCategories.Commands;
+using MauzoHub.Application.CQRS.Businesses.Commands;
+using MauzoHub.Application.CQRS.Users.Commands;
 using MauzoHub.Application.CQRS.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -77,5 +79,6 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(user);
         }
+                
     }
 }

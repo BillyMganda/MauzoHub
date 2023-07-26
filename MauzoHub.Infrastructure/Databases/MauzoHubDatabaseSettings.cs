@@ -7,5 +7,6 @@
         public string UsersCollectionName { get; set; } = null!;
         public string RefreshTokensCollectionName { get; set; } = null!;
         public string BusinessCategoriesCollectionName { get; set; } = null!;
+        public string BusinessCollectionName { get; set; } = null!;
     }
 }

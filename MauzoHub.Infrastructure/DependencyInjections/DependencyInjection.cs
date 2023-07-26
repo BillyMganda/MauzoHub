@@ -22,6 +22,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.UsersCollectionName = configuration.GetSection("MauzoHubDatabase:UsersCollectionName").Value!;
                 options.RefreshTokensCollectionName = configuration.GetSection("MauzoHubDatabase:RefreshTokensCollectionName").Value!;
                 options.BusinessCategoriesCollectionName = configuration.GetSection("MauzoHubDatabase:BusinessCategoriesCollectionName").Value!;
+                options.BusinessCollectionName = configuration.GetSection("MauzoHubDatabase:BusinessCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 
@@ -46,6 +47,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IRedisCacheProvider, RedisCacheProvider>();
             services.AddScoped<IOauthRepository, OauthRepository>();
             services.AddScoped<IBusinessCategoryRepository, BusinessCategoryRepository>();
+            services.AddScoped<IBusinessRepository, BusinessRepository>();
 
             // JWT
             services.AddAuthentication(x => {
