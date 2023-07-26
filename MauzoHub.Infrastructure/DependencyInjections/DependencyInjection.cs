@@ -47,6 +47,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IRedisCacheProvider, RedisCacheProvider>();
             services.AddScoped<IOauthRepository, OauthRepository>();
             services.AddScoped<IBusinessCategoryRepository, BusinessCategoryRepository>();
+            services.AddScoped<IBusinessRepository, BusinessRepository>();
 
             // JWT
             services.AddAuthentication(x => {
