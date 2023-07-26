@@ -1,0 +1,41 @@
+User:
+	Fields:
+	ID: Unique identifier for the user.
+	Name: Name of the user.
+	Email: Email address of the user.
+	Password: Hashed password for user authentication.
+	Role: User role (e.g., customer, business owner, admin).
+Business:
+	Fields:
+	ID: Unique identifier for the business.
+	Name: Name of the business.
+	Category: Category of the business (e.g., shop, salon).
+	Owner: Reference to the User who owns the business.
+Product:
+	Fields:
+	ID: Unique identifier for the product.
+	Name: Name of the product.
+	Description: Description of the product.
+	Images: Array of image URLs for the product.
+	Business: Reference to the Business that sells the product.
+Service:
+	Fields:
+	ID: Unique identifier for the service.
+	Name: Name of the service.
+	Description: Description of the service.
+	Images: Array of image URLs for the service.
+	Business: Reference to the Business that provides the service.
+Appointment:
+	Fields:
+	ID: Unique identifier for the appointment.
+	User: Reference to the User who booked the appointment.
+	Service: Reference to the Service for which the appointment is booked.
+	Date: Date of the appointment.
+	Time: Time of the appointment.
+Review:
+	Fields:
+	ID: Unique identifier for the review.
+	User: Reference to the User who left the review.
+	Product/Service: Reference to the Product or Service being reviewed.
+	Rating: Numeric rating given by the user (e.g., on a scale of 1 to 5).
+	Comment: Textual comment or review description.

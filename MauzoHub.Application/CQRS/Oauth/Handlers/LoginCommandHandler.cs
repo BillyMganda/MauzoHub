@@ -1,6 +1,7 @@
 ﻿using MauzoHub.Application.CQRS.Oauth.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
+using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -8,19 +9,19 @@ using Serilog;
 
 namespace MauzoHub.Application.CQRS.Oauth.Handlers
 {
-    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, string>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOauthRepository _oauthRepository;
-        public UserLoginCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IOauthRepository oauthRepository)
+        public LoginCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IOauthRepository oauthRepository)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
             _oauthRepository = oauthRepository;
         }
 
-        public async Task<string> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -85,9 +86,30 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 }
                 else
                 {
-                    var Token = _oauthRepository.CreateJwtToken(request.Email);
+                    // Successful Login
+                    var accessToken = _oauthRepository.CreateJwtToken(request.Email);
+                    var refreshToken = _oauthRepository.GenerateRefreshToken();
 
-                    return Token;
+                    // Save Refresh token To database
+                    var refresh_token = new RefreshTokens
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = request.Email,
+                        Token = refreshToken,
+                        ExpiryDate = DateTime.Now.AddDays(7),
+                        CreatedAt = DateTime.Now,
+                        IsActive = true,
+                    };
+                    await _oauthRepository.SaveRefreshRoken(refresh_token);                    
+
+
+                    var loginResponse = new LoginResponse
+                    {
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken,
+                    };
+
+                    return loginResponse;
                 }                
             }
             catch (Exception ex)

@@ -18,7 +18,7 @@ namespace MauzoHub.Infrastructure.Repositories
         
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
-        private readonly IMongoCollection<User> _usersCollection;
+        private readonly IMongoCollection<RefreshTokens> _refreshTokensCollection;
         public OauthRepository(IConfiguration configuration, IUserRepository userRepository, IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
             _configuration = configuration;
@@ -27,7 +27,7 @@ namespace MauzoHub.Infrastructure.Repositories
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
             var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
-            _usersCollection = database.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
+            _refreshTokensCollection = database.GetCollection<RefreshTokens>(databaseSettings.Value.RefreshTokensCollectionName);
         }
 
         // Login
@@ -72,6 +72,30 @@ namespace MauzoHub.Infrastructure.Repositories
             return jwtToken;
         }
 
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public async Task<bool> ValidateRefreshToken(string token)
+        {
+            var refreshToken = await _refreshTokensCollection.Find(t => t.Token == token).FirstOrDefaultAsync();
+            // TODO: Check if this if statemet is correct
+            if(refreshToken == null || refreshToken.IsActive == false || refreshToken.ExpiryDate < DateTime.Now)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public async Task<RefreshTokens> SaveRefreshRoken(RefreshTokens refreshToken)
+        {
+            await _refreshTokensCollection.InsertOneAsync(refreshToken);
+            return refreshToken;
+        }
         // Forgot Password
         public string GeneratePasswordResetTokenAsync(string email)
         {
