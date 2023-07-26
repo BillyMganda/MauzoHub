@@ -45,5 +45,10 @@ namespace MauzoHub.Infrastructure.Repositories
             await _businessCollection.ReplaceOneAsync(b => b.Id == entity.Id, entity);
             return entity;
         }
+
+        public async Task<Businesses> GetBusinessByNameAsync(string name)
+        {
+            return await _businessCollection.Find(b => b.Name == name).FirstOrDefaultAsync();
+        }
     }
 }
