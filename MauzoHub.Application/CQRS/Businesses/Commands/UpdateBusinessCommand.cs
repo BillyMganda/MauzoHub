@@ -10,7 +10,7 @@ namespace MauzoHub.Application.CQRS.Businesses.Commands
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
-        [Required, MinLength(500)]
+        [Required, MaxLength(500)]
         public string Description { get; set; } = string.Empty;
         [Required]
         public Guid CategoryId { get; set; }

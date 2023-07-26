@@ -62,23 +62,24 @@ namespace MauzoHub.Application.CQRS.Businesses.Handlers
                     throw new NotFoundException($"business with id {request.Id} not found");
                 }               
 
-                var avoidName = await _businessRepository.GetBusinessByNameAsync(request.Name);
+                // TODO: Check on this
+                //var avoidName = await _businessRepository.GetBusinessByNameAsync(request.Name);
 
-                if (avoidName != null)
-                {
-                    var errorLog = new ErrorLog
-                    {
-                        DateTime = DateTime.Now,
-                        ErrorCode = "400",
-                        ErrorMessage = $"business with name {request.Name} already exists",
-                        IPAddress = remoteIpAddress!.ToString(),
-                        ActionUrl = actionUrl,
-                        HttpMethod = httpMethod,
-                    };
+                //if (avoidName != null)
+                //{
+                //    var errorLog = new ErrorLog
+                //    {
+                //        DateTime = DateTime.Now,
+                //        ErrorCode = "400",
+                //        ErrorMessage = $"business with name {request.Name} already exists",
+                //        IPAddress = remoteIpAddress!.ToString(),
+                //        ActionUrl = actionUrl,
+                //        HttpMethod = httpMethod,
+                //    };
 
-                    Log.Error("business with provided name exists: {errorLog}", errorLog);
-                    throw new BadRequestException($"business with name {request.Name} exists");
-                }
+                //    Log.Error("business with provided name exists: {errorLog}", errorLog);
+                //    throw new BadRequestException($"business with name {request.Name} exists");
+                //}
 
                 business.Name = request.Name;
                 business.Description = request.Description;
