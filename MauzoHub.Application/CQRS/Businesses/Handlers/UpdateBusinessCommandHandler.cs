@@ -84,6 +84,7 @@ namespace MauzoHub.Application.CQRS.Businesses.Handlers
                 business.Name = request.Name;
                 business.Description = request.Description;
                 business.CategoryId = request.CategoryId;
+                business.LastModified = DateTime.Now;
 
                 await _businessRepository.UpdateAsync(business);
 
