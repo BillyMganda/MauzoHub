@@ -47,5 +47,13 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(product);
         }
+
+        [HttpDelete("id/{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var command = new DeleteProductCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
     }
 }
