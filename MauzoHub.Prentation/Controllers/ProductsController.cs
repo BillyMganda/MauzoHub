@@ -31,5 +31,13 @@ namespace MauzoHub.Prentation.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpGet()]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var query = new GetAllProductsQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }
