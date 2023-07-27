@@ -39,5 +39,13 @@ namespace MauzoHub.Prentation.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateProduct(UpdateProductsCommand command)
+        {
+            var product = await _mediator.Send(command);
+
+            return Ok(product);
+        }
     }
 }
