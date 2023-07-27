@@ -1,5 +1,7 @@
 ﻿using MauzoHub.Application.CQRS.Products.Commands;
+using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
+using MauzoHub.Application.Helpers;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +21,15 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
 
         public async Task<GetProductsDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
+            // Validate the command before processing
+            var validationResult = await new AddProductCommandValidator().ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {                
+                throw new ValidationException("validation failed");
+            }
+
+
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
 
