@@ -1,6 +1,7 @@
 ﻿using MauzoHub.Application.CQRS.Businesses.Commands;
 using MauzoHub.Application.CQRS.Businesses.Queries;
 using MauzoHub.Application.CQRS.Products.Commands;
+using MauzoHub.Application.CQRS.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace MauzoHub.Prentation.Controllers
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
-            var query = new GetBusinessByIdQuery { Id = id };
+            var query = new GetProductByIdQuery { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }
