@@ -18,7 +18,7 @@ namespace MauzoHub.Prentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] AddProductCommand command)
+        public async Task<IActionResult> CreateProduct([FromForm] AddProductCommand command)
         {
             var productDto = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetProductById), new { id = productDto.Id }, productDto);

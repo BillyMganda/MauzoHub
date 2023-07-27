@@ -1,5 +1,6 @@
 ﻿using MauzoHub.Application.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace MauzoHub.Application.CQRS.Products.Commands
 {
@@ -7,7 +8,7 @@ namespace MauzoHub.Application.CQRS.Products.Commands
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public List<string> Images { get; set; } = new List<string>();
+        public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public Guid BusinessId { get; set; }
     }
 }

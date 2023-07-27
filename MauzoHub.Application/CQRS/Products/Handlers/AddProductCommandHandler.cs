@@ -27,6 +27,18 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
 
             try
             {
+                // Handle image uploads and convert them to strings
+                var imageStrings = new List<string>();
+                foreach (var imageFile in request.Images)
+                {
+                    if (imageFile.Length > 0)
+                    {
+                        using var memoryStream = new MemoryStream();
+                        await imageFile.CopyToAsync(memoryStream);
+                        imageStrings.Add(Convert.ToBase64String(memoryStream.ToArray()));
+                    }
+                }
+
                 var newProduct = new Domain.Entities.Products
                 {
                     Id = Guid.NewGuid(),
@@ -34,7 +46,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
                     LastModified = DateTime.Now,
                     Name = request.Name,
                     Description = request.Description,
-                    Images = request.Images,
+                    Images = imageStrings,
                     BusinessId = request.BusinessId,
                 };
 
