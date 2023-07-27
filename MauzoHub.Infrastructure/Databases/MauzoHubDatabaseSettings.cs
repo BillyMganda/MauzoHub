@@ -8,5 +8,6 @@
         public string RefreshTokensCollectionName { get; set; } = null!;
         public string BusinessCategoriesCollectionName { get; set; } = null!;
         public string BusinessCollectionName { get; set; } = null!;
+        public string ProductsCollectionName { get; set; } = null!;
     }
 }
