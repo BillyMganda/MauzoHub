@@ -19,5 +19,35 @@ namespace MauzoHub.Infrastructure.Repositories
 
             _redisCache = redisCache;
         }
+
+        public async Task<Services> AddAsync(Services entity)
+        {
+            await _servicesCollection.InsertOneAsync(entity);
+            return entity;
+        }
+
+        public async Task<Services> DeleteAsync(Services entity)
+        {
+            await _servicesCollection.DeleteOneAsync(b => b.Id == entity.Id);
+            return entity;
+        }
+
+        public async Task<IEnumerable<Services>> GetAllAsync()
+        {
+            var services = await _servicesCollection.Find(s => true).ToListAsync();
+            return services;
+        }
+
+        public async Task<Services> GetByIdAsync(Guid id)
+        {
+            var service = await _servicesCollection.Find(s => s.Id == id).FirstOrDefaultAsync();
+            return service;
+        }
+
+        public async Task<Services> UpdateAsync(Services entity)
+        {
+            await _servicesCollection.ReplaceOneAsync(s => s.Id == entity.Id, entity);
+            return entity;
+        }
     }
 }
