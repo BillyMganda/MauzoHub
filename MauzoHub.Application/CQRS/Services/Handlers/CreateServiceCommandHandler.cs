@@ -19,6 +19,10 @@ namespace MauzoHub.Application.CQRS.Services.Handlers
 
         public async Task<GetServiceDto> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
         {
+            // TODO: Validate the command before processing
+
+
+
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
 
