@@ -24,6 +24,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.BusinessCategoriesCollectionName = configuration.GetSection("MauzoHubDatabase:BusinessCategoriesCollectionName").Value!;
                 options.BusinessCollectionName = configuration.GetSection("MauzoHubDatabase:BusinessCollectionName").Value!;
                 options.ProductsCollectionName = configuration.GetSection("MauzoHubDatabase:ProductsCollectionName").Value!;
+                options.ServicesCollectionName = configuration.GetSection("MauzoHubDatabase:ServicesCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 
@@ -50,6 +51,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IBusinessCategoryRepository, BusinessCategoryRepository>();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IServicesRepository, ServicesRepository>();
 
             // JWT
             services.AddAuthentication(x => {
