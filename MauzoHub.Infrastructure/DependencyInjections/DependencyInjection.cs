@@ -25,6 +25,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.BusinessCollectionName = configuration.GetSection("MauzoHubDatabase:BusinessCollectionName").Value!;
                 options.ProductsCollectionName = configuration.GetSection("MauzoHubDatabase:ProductsCollectionName").Value!;
                 options.ServicesCollectionName = configuration.GetSection("MauzoHubDatabase:ServicesCollectionName").Value!;
+                options.AppointmentsCollectionName = configuration.GetSection("MauzoHubDatabase:AppointmentsCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 
