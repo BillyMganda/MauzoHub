@@ -10,5 +10,6 @@
         public string BusinessCollectionName { get; set; } = null!;
         public string ProductsCollectionName { get; set; } = null!;
         public string ServicesCollectionName { get; set; } = null!;
+        public string AppointmentsCollectionName { get; set; } = null!;
     }
 }
