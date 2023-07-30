@@ -19,4 +19,8 @@
     <ProjectReference Include="..\MauzoHub.Domain\MauzoHub.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Appointments\Queries\" />
+  </ItemGroup>
+
 </Project>
