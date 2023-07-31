@@ -1,11 +1,12 @@
-﻿using MauzoHub.Application.CustomExceptions;
+﻿using MauzoHub.Application.CQRS.Appointments.Queries;
+using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
-namespace MauzoHub.Application.CQRS.Appointments.Queries
+namespace MauzoHub.Application.CQRS.Appointments.Handlers
 {
     public class GetAppointmentByIdQueryHandler : IRequestHandler<GetAppointmentByIdQuery, GetAppointmentDto>
     {
