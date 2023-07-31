@@ -1,4 +1,4 @@
-﻿using MauzoHub.Application.CQRS.BusinessCategories.Commands;
+﻿using MauzoHub.Application.CQRS.Appointments.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Interfaces;
@@ -6,19 +6,19 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
-namespace MauzoHub.Application.CQRS.BusinessCategories.Handlers
+namespace MauzoHub.Application.CQRS.Appointments.Handlers
 {
-    public class UpdateBusinessCategoryCommandHandler : IRequestHandler<UpdateBusinessCategoryCommand, GetCategoryDto>
+    public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand, Unit>
     {
-        private readonly IBusinessCategoryRepository _businessCategoryRepository;
+        private readonly IAppointmentRepository _appointmentsRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UpdateBusinessCategoryCommandHandler(IBusinessCategoryRepository businessCategoryRepository, IHttpContextAccessor httpContextAccessor)
+        public DeleteAppointmentCommandHandler(IAppointmentRepository appointmentsRepository, IHttpContextAccessor httpContextAccessor)
         {
-            _businessCategoryRepository = businessCategoryRepository;
+            _appointmentsRepository = appointmentsRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<GetCategoryDto> Handle(UpdateBusinessCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteAppointmentCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -37,43 +37,34 @@ namespace MauzoHub.Application.CQRS.BusinessCategories.Handlers
                     ActionUrl = actionUrl,
                     HttpMethod = httpMethod,
                 };
-
                 Log.Error("An error occurred while processing the command, Invalid request Id: {@ErrorLog}", errorLog);
+
                 throw new BadRequestException("Invalid request Id");
             }
 
             try
             {
-                var category = await _businessCategoryRepository.GetByIdAsync(request.Id);
+                var appointment = await _appointmentsRepository.GetByIdAsync(request.Id);
 
-                if(category == null)
+                if (appointment == null)
                 {
                     var errorLog = new ErrorLog
                     {
                         DateTime = DateTime.Now,
                         ErrorCode = "404",
-                        ErrorMessage = $"category with id {request.Id} not found",
-                        IPAddress = remoteIpAddress!.ToString(),
+                        ErrorMessage = $"appointment with id {request.Id} not found",
+                        IPAddress = remoteIpAddress.ToString(),
                         ActionUrl = actionUrl,
                         HttpMethod = httpMethod,
                     };
 
-                    Log.Error("category with provided id not found: {errorLog}", errorLog);
-                    throw new NotFoundException($"category with id {request.Id} not found");
+                    Log.Error($"appointment with id {request.Id} not found", errorLog);
+                    throw new NotFoundException($"appointment with id {request.Id} not found");
                 }
 
-                category.CategoryName = request.CategoryName;
-                category.LastModified = DateTime.Now;
+                await _appointmentsRepository.DeleteAsync(appointment);
 
-                await _businessCategoryRepository.UpdateAsync(category);
-
-                var categoryDto = new GetCategoryDto
-                {
-                    Id = category.Id,
-                    CategoryName = category.CategoryName,
-                };
-
-                return categoryDto;
+                return Unit.Value;
             }
             catch (Exception ex)
             {

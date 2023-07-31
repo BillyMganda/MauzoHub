@@ -35,8 +35,7 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
                     LastModified = DateTime.Now,
                     UserId = request.UserId,
                     ServiceId = request.ServiceId,
-                    AppointmentDate = request.AppointmentDate,
-                    AppointmentTime = request.AppointmentTime,
+                    AppointmentDateTime = request.AppointmentDateTime,                    
                 };
 
                 await _appointmentsRepository.AddAsync(appointment);
@@ -46,8 +45,7 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
                     Id = appointment.Id,
                     UserId = appointment.UserId,
                     ServiceId = appointment.ServiceId,
-                    AppointmentDate = appointment.AppointmentDate,
-                    AppointmentTime = appointment.AppointmentTime,
+                    AppointmentDateTime = appointment.AppointmentDateTime,                    
                 };
 
                 return apointmentDto;
