@@ -1,4 +1,4 @@
-﻿using MauzoHub.Application.CQRS.BusinessCategories.Commands;
+﻿using MauzoHub.Application.CQRS.Appointments.Commands;
 using MauzoHub.Application.CustomExceptions;
 using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Interfaces;
@@ -6,19 +6,19 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
-namespace MauzoHub.Application.CQRS.BusinessCategories.Handlers
+namespace MauzoHub.Application.CQRS.Appointments.Handlers
 {
-    public class UpdateBusinessCategoryCommandHandler : IRequestHandler<UpdateBusinessCategoryCommand, GetCategoryDto>
+    public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointmentCommand, GetAppointmentDto>
     {
-        private readonly IBusinessCategoryRepository _businessCategoryRepository;
+        private readonly IAppointmentRepository _appointmentsRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UpdateBusinessCategoryCommandHandler(IBusinessCategoryRepository businessCategoryRepository, IHttpContextAccessor httpContextAccessor)
+        public UpdateAppointmentCommandHandler(IAppointmentRepository appointmentsRepository, IHttpContextAccessor httpContextAccessor)
         {
-            _businessCategoryRepository = businessCategoryRepository;
+            _appointmentsRepository = appointmentsRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<GetCategoryDto> Handle(UpdateBusinessCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<GetAppointmentDto> Handle(UpdateAppointmentCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -44,36 +44,40 @@ namespace MauzoHub.Application.CQRS.BusinessCategories.Handlers
 
             try
             {
-                var category = await _businessCategoryRepository.GetByIdAsync(request.Id);
+                var appointmnet = await _appointmentsRepository.GetByIdAsync(request.Id);
 
-                if(category == null)
+                if (appointmnet == null)
                 {
                     var errorLog = new ErrorLog
                     {
                         DateTime = DateTime.Now,
                         ErrorCode = "404",
-                        ErrorMessage = $"category with id {request.Id} not found",
+                        ErrorMessage = $"appointmnet with id {request.Id} not found",
                         IPAddress = remoteIpAddress!.ToString(),
                         ActionUrl = actionUrl,
                         HttpMethod = httpMethod,
                     };
 
-                    Log.Error("category with provided id not found: {errorLog}", errorLog);
-                    throw new NotFoundException($"category with id {request.Id} not found");
+                    Log.Error("appointmnet with provided id not found: {errorLog}", errorLog);
+                    throw new NotFoundException($"appointmnet with id {request.Id} not found");
                 }
 
-                category.CategoryName = request.CategoryName;
-                category.LastModified = DateTime.Now;
+                appointmnet.AppointmentDate = request.AppointmentDate;
+                appointmnet.AppointmentTime = request.AppointmentTime;
+                appointmnet.LastModified = DateTime.Now;
 
-                await _businessCategoryRepository.UpdateAsync(category);
+                await _appointmentsRepository.UpdateAsync(appointmnet);
 
-                var categoryDto = new GetCategoryDto
+                var appointmentDto = new GetAppointmentDto
                 {
-                    Id = category.Id,
-                    CategoryName = category.CategoryName,
+                    Id = appointmnet.Id,
+                    UserId = appointmnet.UserId,
+                    ServiceId = appointmnet.ServiceId,                    
+                    AppointmentDate = appointmnet.AppointmentDate,
+                    AppointmentTime = appointmnet.AppointmentTime,
                 };
 
-                return categoryDto;
+                return appointmentDto;
             }
             catch (Exception ex)
             {

@@ -66,8 +66,18 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
 
                 return Unit.Value;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var errorLog = new ErrorLog
+                {
+                    DateTime = DateTime.Now,
+                    ErrorCode = "500",
+                    ErrorMessage = ex.Message,
+                    IPAddress = remoteIpAddress.ToString(),
+                    ActionUrl = actionUrl,
+                    HttpMethod = httpMethod,
+                };
+                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);
 
                 throw;
             }
