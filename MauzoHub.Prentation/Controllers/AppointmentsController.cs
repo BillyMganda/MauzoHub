@@ -38,6 +38,15 @@ namespace MauzoHub.Prentation.Controllers
             return Ok(result);
         }
 
+        // TODO: check this endpoint
+        [HttpGet("user/{userid}")]
+        public async Task<IActionResult> GetAllAppointmentsForUser(Guid userid)
+        {
+            var query = new GetAppointmentsForUserQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateAppointment(UpdateAppointmentCommand command)
         {
