@@ -34,8 +34,7 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
                     Id = a.Id,
                     UserId = a.UserId,
                     ServiceId = a.ServiceId,
-                    AppointmentDate = a.AppointmentDate,
-                    AppointmentTime = a.AppointmentTime,
+                    AppointmentDateTime = a.AppointmentDateTime,                   
                 });
 
                 return appointmentsDto;

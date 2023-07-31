@@ -1,7 +1,5 @@
 ﻿using MauzoHub.Application.CQRS.Appointments.Commands;
 using MauzoHub.Application.CQRS.Appointments.Queries;
-using MauzoHub.Application.CQRS.BusinessCategories.Commands;
-using MauzoHub.Application.CQRS.BusinessCategories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

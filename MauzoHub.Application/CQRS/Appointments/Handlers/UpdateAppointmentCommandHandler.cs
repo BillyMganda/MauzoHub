@@ -62,8 +62,7 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
                     throw new NotFoundException($"appointmnet with id {request.Id} not found");
                 }
 
-                appointmnet.AppointmentDate = request.AppointmentDate;
-                appointmnet.AppointmentTime = request.AppointmentTime;
+                appointmnet.AppointmentDateTime = request.AppointmentDateTime;                
                 appointmnet.LastModified = DateTime.Now;
 
                 await _appointmentsRepository.UpdateAsync(appointmnet);
@@ -73,8 +72,7 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
                     Id = appointmnet.Id,
                     UserId = appointmnet.UserId,
                     ServiceId = appointmnet.ServiceId,                    
-                    AppointmentDate = appointmnet.AppointmentDate,
-                    AppointmentTime = appointmnet.AppointmentTime,
+                    AppointmentDateTime = appointmnet.AppointmentDateTime,                    
                 };
 
                 return appointmentDto;

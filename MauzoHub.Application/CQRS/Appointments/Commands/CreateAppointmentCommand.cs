@@ -11,8 +11,6 @@ namespace MauzoHub.Application.CQRS.Appointments.Commands
         [Required]
         public Guid ServiceId { get; set; }
         [Required]
-        public DateOnly AppointmentDate { get; set; }
-        [Required]
-        public TimeOnly AppointmentTime { get; set; }
+        public DateTime AppointmentDateTime { get; set; }        
     }
 }
