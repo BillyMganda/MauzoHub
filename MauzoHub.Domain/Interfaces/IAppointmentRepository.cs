@@ -4,6 +4,6 @@ namespace MauzoHub.Domain.Interfaces
 {
     public interface IAppointmentRepository : IRepository<Appointments>
     {
-        public Task<Appointments> GetAppointmentsForuserAsync(Guid userId);
+        public Task<IEnumerable<Appointments>> GetAppointmentsForuserAsync(Guid userId);
     }
 }

@@ -38,6 +38,12 @@ namespace MauzoHub.Infrastructure.Repositories
             return results;
         }
 
+        public async Task<IEnumerable<Appointments>> GetAppointmentsForuserAsync(Guid userId)
+        {
+            var results = await _appointmentsCollection.Find(a => a.UserId == userId).ToListAsync();
+            return results;
+        }
+
         public async Task<Appointments> GetByIdAsync(Guid id)
         {
             var result = await _appointmentsCollection.Find(a => a.Id == id).FirstOrDefaultAsync();
