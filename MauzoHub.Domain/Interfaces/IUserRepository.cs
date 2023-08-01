@@ -9,5 +9,6 @@ namespace MauzoHub.Domain.Interfaces
         Task<bool> EnableUser(Guid Id);
         Task<User> GetByTokenAsync(string token);
         Task<User> AddUserWithBusinessRole(User user);
+        Task<User> AddUserWithNormalUserRole(User user);
     }
 }

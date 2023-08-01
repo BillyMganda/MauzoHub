@@ -90,6 +90,13 @@ namespace MauzoHub.Infrastructure.Repositories
             return user;
         }
 
+        public async Task<User> AddUserWithNormalUserRole(User user)
+        {
+            await _usersCollection.InsertOneAsync(user);
+            await _redisCache.RemoveAsync("allusers");
+            return user;
+        }
+
         public async Task<User> UpdateAsync(User user)
         {
             await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
