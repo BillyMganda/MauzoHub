@@ -87,7 +87,8 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 else
                 {
                     // Successful Login
-                    var accessToken = _oauthRepository.CreateJwtToken(request.Email);
+                    string role = user.Role;
+                    var accessToken = _oauthRepository.CreateJwtToken(request.Email, role);
                     var refreshToken = _oauthRepository.GenerateRefreshToken();
 
                     // Save Refresh token To database
