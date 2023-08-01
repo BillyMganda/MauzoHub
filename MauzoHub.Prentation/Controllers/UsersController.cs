@@ -17,7 +17,7 @@ namespace MauzoHub.Prentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("admin")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
             var userDto = await _mediator.Send(command);
