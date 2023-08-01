@@ -31,6 +31,13 @@ namespace MauzoHub.Prentation.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
         }
 
+        [HttpPost("user")]
+        public async Task<IActionResult> CreateNormalUser([FromBody] CreateNormalUserCommand command)
+        {
+            var userDto = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
+        }
+
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
