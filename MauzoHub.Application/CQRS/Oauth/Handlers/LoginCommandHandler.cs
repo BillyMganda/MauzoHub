@@ -38,7 +38,7 @@ namespace MauzoHub.Application.CQRS.Oauth.Handlers
                 {
                     DateTime = DateTime.Now,
                     ErrorCode = "404",
-                    ErrorMessage = "User not found",
+                    ErrorMessage = $"User with email {request.Email} not found",
                     IPAddress = remoteIpAddress!.ToString(),
                     ActionUrl = actionUrl,
                     HttpMethod = httpMethod,
