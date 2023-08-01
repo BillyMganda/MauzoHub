@@ -54,7 +54,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
 
                 var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, "User", true);
 
-                await _userRepository.AddUserWithNormalUserRole(user);
+                await _userRepository.AddAsync(user);
 
                 var userDto = new GetUserDto
                 {
