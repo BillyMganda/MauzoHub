@@ -1,9 +1,68 @@
-<mxfile host="app.diagrams.net" modified="2023-08-02T09:36:07.102Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" version="21.6.6" etag="E2PBVL8aXFC-_oNmr5V9" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-02T10:01:20.674Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="Yfp82rIgaRihonscSpf2" version="21.6.6" type="github">
   <diagram name="Page-1" id="f0ehlDP78vOYPpBUcNR0">
-    <mxGraphModel>
+    <mxGraphModel dx="880" dy="446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-1" value="Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#9999FF;" vertex="1" parent="1">
+          <mxGeometry x="20" y="149" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-7" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="TlfMzXQ2j0mKmVghSwHN-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="110" y="179" as="sourcePoint" />
+            <mxPoint x="200" y="169" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-8" value="Does email exists?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#9999FF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="120" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-10" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="TlfMzXQ2j0mKmVghSwHN-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="170" as="sourcePoint" />
+            <mxPoint x="440" y="163" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-11" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="386" y="139" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-13" value="Does password match email" style="rhombus;whiteSpace=wrap;html=1;fillColor=#9999FF;" vertex="1" parent="1">
+          <mxGeometry x="440" y="120" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-14" value="Grant access" style="ellipse;whiteSpace=wrap;html=1;fillColor=#9999FF;" vertex="1" parent="1">
+          <mxGeometry x="701" y="150" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-15" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="641" y="170" as="sourcePoint" />
+            <mxPoint x="701" y="170" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-16" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="645" y="139" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-17" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="TlfMzXQ2j0mKmVghSwHN-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="320" as="sourcePoint" />
+            <mxPoint x="290" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-18" value="Display error message" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="230" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-19" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="TlfMzXQ2j0mKmVghSwHN-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="360" as="sourcePoint" />
+            <mxPoint x="50" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TlfMzXQ2j0mKmVghSwHN-20" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="310" as="sourcePoint" />
+            <mxPoint x="50" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
