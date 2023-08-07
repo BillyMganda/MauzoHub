@@ -53,11 +53,12 @@ namespace MauzoHub.Infrastructure.Repositories
             }
         }
 
-        public string CreateJwtToken(string email)
+        public string CreateJwtToken(string email, string role)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, email)
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:Key").Value!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

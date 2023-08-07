@@ -40,6 +40,8 @@ namespace MauzoHub.Application.CQRS.Appointments.Handlers
 
                 await _appointmentsRepository.AddAsync(appointment);
 
+                //TODO: use this 'appointment' as a massage in azure service bus
+
                 var apointmentDto = new GetAppointmentDto
                 {
                     Id = appointment.Id,

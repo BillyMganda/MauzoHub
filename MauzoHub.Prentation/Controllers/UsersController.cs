@@ -1,6 +1,4 @@
-﻿using MauzoHub.Application.CQRS.BusinessCategories.Commands;
-using MauzoHub.Application.CQRS.Businesses.Commands;
-using MauzoHub.Application.CQRS.Users.Commands;
+﻿using MauzoHub.Application.CQRS.Users.Commands;
 using MauzoHub.Application.CQRS.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +15,22 @@ namespace MauzoHub.Prentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("admin")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        {
+            var userDto = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
+        }
+
+        [HttpPost("business")]
+        public async Task<IActionResult> CreateBusinessUser([FromBody] CreateBusinessUserCommand command)
+        {
+            var userDto = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);
+        }
+
+        [HttpPost("user")]
+        public async Task<IActionResult> CreateNormalUser([FromBody] CreateNormalUserCommand command)
         {
             var userDto = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetUserById), new { id = userDto.Id }, userDto);

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MauzoHub.Application.CQRS.Users.Commands
 {
-    public class CreateUserCommand : IRequest<GetUserDto>
+    public class CreateNormalUserCommand : IRequest<GetUserDto>
     {
         [Required]
         public string FirstName { get; set; } = string.Empty;
@@ -13,6 +13,6 @@ namespace MauzoHub.Application.CQRS.Users.Commands
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
         [Required, MinLength(6)]
-        public string Password { get; set; } = string.Empty;        
+        public string Password { get; set; } = string.Empty;
     }
 }

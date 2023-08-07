@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MauzoHub.Application.CQRS.Users.Commands
 {
-    public class CreateUserCommand : IRequest<GetUserDto>
+    public class CreateBusinessUserCommand : IRequest<GetUserDto>
     {
         [Required]
         public string FirstName { get; set; } = string.Empty;

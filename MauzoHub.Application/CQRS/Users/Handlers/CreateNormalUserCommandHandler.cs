@@ -11,17 +11,17 @@ using System.Text;
 
 namespace MauzoHub.Application.CQRS.Users.Handlers
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUserDto>
+    public class CreateNormalUserCommandHandler : IRequestHandler<CreateNormalUserCommand, GetUserDto>
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public CreateUserCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateNormalUserCommandHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<GetUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<GetUserDto> Handle(CreateNormalUserCommand request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -32,7 +32,7 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
             var findUserByEmail = await _userRepository.GetByEmailAsync(request.Email);
 
             if (findUserByEmail is not null)
-            {              
+            {
                 var errorLog = new ErrorLog
                 {
                     DateTime = DateTime.Now,
@@ -46,13 +46,13 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                 Log.Error("An error occurred while processing the command: {@ErrorLog}", errorLog);
                 throw new UnprocessableEntityException("Email already registered");
             }
-            
+
             try
-            {                
+            {
 
                 (string salt, string hash) = GenerateSaltAndHash(request.Password);
 
-                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, "Admin", true);
+                var user = new User(request.FirstName, request.LastName, request.Email, salt, hash, "User", true);
 
                 await _userRepository.AddAsync(user);
 
@@ -75,13 +75,13 @@ namespace MauzoHub.Application.CQRS.Users.Handlers
                     ErrorMessage = ex.Message,
                     IPAddress = remoteIpAddress.ToString(),
                     ActionUrl = actionUrl,
-                    HttpMethod= httpMethod,
+                    HttpMethod = httpMethod,
                 };
-                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);                
+                Log.Error(ex, "An error occurred while processing the command: {@ErrorLog}", errorLog);
 
                 throw;
             }
-        }       
+        }
 
         private (string salt, string hash) GenerateSaltAndHash(string password)
         {
