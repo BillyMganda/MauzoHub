@@ -57,5 +57,11 @@ namespace MauzoHub.Infrastructure.Repositories
             await _reviewsCollection.ReplaceOneAsync(r => r.Id == review.Id, review);
             return review;
         }
+
+        public async Task<IEnumerable<Review>> GetReviewsForProductOrService(Guid ProductOrServiceId)
+        {
+            var reviews = await _reviewsCollection.Find(r => r.ProductOrServiceId == ProductOrServiceId).ToListAsync();
+            return reviews;
+        }
     }
 }
