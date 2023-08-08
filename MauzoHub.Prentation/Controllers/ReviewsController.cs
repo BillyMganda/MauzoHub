@@ -37,5 +37,13 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(reviewDto);
         }
+
+        [HttpPut("activate")]
+        public async Task<IActionResult> ActivateReview(ActivateReviewCommand command)
+        {
+            var reviewDto = await _mediator.Send(command);
+
+            return Ok(reviewDto);
+        }
     }
 }
