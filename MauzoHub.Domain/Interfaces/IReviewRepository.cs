@@ -4,7 +4,8 @@ namespace MauzoHub.Domain.Interfaces
 {
     public interface IReviewRepository
     {
-        Review CreateReview(Guid userId, Guid productOrServiceId, int ratingValue, string comment);
-        void DeactivateReview(Guid reviewId);
+        Task<Review> FindReviewByIdAsync(Guid reviewId);
+        Task<Review> CreateReview(Guid userId, Guid productOrServiceId, int ratingValue, string comment);
+        Task<Review> DeactivateReview(Guid reviewId);
     }
 }

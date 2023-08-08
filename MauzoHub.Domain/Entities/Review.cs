@@ -2,11 +2,11 @@
 {
     public class Review : BaseEntity
     {
-        public Guid UserId { get; private set; }
-        public Guid ProductOrServiceId { get; private set; }
-        public Rating Rating { get; private set; }
-        public string Comment { get; private set; } = string.Empty;
-        public bool IsActive { get; private set; }
+        public Guid UserId { get; set; }
+        public Guid ProductOrServiceId { get; set; }
+        public Rating Rating { get; set; }
+        public string Comment { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
 
         public void UpdateRating(int ratingValue)
         {
