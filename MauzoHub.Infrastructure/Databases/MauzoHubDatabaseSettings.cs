@@ -11,5 +11,6 @@
         public string ProductsCollectionName { get; set; } = null!;
         public string ServicesCollectionName { get; set; } = null!;
         public string AppointmentsCollectionName { get; set; } = null!;
+        public string ReviewsCollectionName { get; set; } = null!;
     }
 }
