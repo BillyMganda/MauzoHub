@@ -49,5 +49,13 @@ namespace MauzoHub.Infrastructure.Repositories
             await _reviewsCollection.ReplaceOneAsync(r => r.Id == review.Id, review);
             return review;
         }
+
+        public async Task<Review> ActivateReview(Guid reviewId)
+        {
+            var review = await _reviewsCollection.Find(r => r.Id == reviewId).FirstOrDefaultAsync();
+            review.MarkAsActive();
+            await _reviewsCollection.ReplaceOneAsync(r => r.Id == review.Id, review);
+            return review;
+        }
     }
 }
