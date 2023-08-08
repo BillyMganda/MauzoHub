@@ -45,5 +45,13 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(reviewDto);
         }
+
+        [HttpGet("product-service-id/{id}")]
+        public async Task<IActionResult> GetReviewByProductOrServiceId(Guid id)
+        {
+            var query = new GetReviewsForProductOrServiceQuery { id = id };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }
