@@ -60,7 +60,9 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<IEnumerable<Review>> GetReviewsForProductOrService(Guid ProductOrServiceId)
         {
-            var reviews = await _reviewsCollection.Find(r => r.ProductOrServiceId == ProductOrServiceId).ToListAsync();
+            var reviews = await _reviewsCollection
+                .Find(r => r.ProductOrServiceId == ProductOrServiceId && r.IsActive == true)
+                .ToListAsync();
             return reviews;
         }
     }
