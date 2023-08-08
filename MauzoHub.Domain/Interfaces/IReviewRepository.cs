@@ -8,5 +8,6 @@ namespace MauzoHub.Domain.Interfaces
         Task<Review> CreateReview(Guid userId, Guid productOrServiceId, int ratingValue, string comment);
         Task<Review> DeactivateReview(Guid reviewId);
         Task<Review> ActivateReview(Guid reviewId);
+        Task<IEnumerable<Review>> GetReviewsForProductOrService(Guid ProductOrServiceId);
     }
 }
