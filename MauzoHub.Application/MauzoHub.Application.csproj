@@ -19,4 +19,9 @@
     <ProjectReference Include="..\MauzoHub.Domain\MauzoHub.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Carts\Handlers\" />
+    <Folder Include="CQRS\Carts\Queries\" />
+  </ItemGroup>
+
 </Project>
