@@ -1,5 +1,6 @@
 ﻿using MauzoHub.Application.CQRS.Businesses.Commands;
 using MauzoHub.Application.CQRS.Businesses.Queries;
+using MauzoHub.Application.CQRS.Carts.Commands;
 using MauzoHub.Application.CQRS.Products.Commands;
 using MauzoHub.Application.CQRS.Products.Queries;
 using MediatR;
@@ -52,6 +53,13 @@ namespace MauzoHub.Prentation.Controllers
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var command = new DeleteProductCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpPost("add-to-cart")]
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartCommand command)
+        {
             await _mediator.Send(command);
             return NoContent();
         }
