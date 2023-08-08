@@ -17,19 +17,26 @@ namespace MauzoHub.Infrastructure.Repositories
             _checkoutCollection = database.GetCollection<Checkout>(databaseSettings.Value.CheckoutCollectionName);
         }
 
-        public Task<Checkout> AddAsync(Checkout checkout)
+        public async Task<Checkout> AddAsync(Checkout checkout)
         {
-            throw new NotImplementedException();
+            await _checkoutCollection
+                .InsertOneAsync(checkout);
+            return checkout;
         }
 
-        public Task<Checkout> GetByUserIdAsync(Guid userId)
+        public async Task<Checkout> GetByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var cart = await _checkoutCollection
+                .Find(c => c.UserId == userId)
+                .FirstOrDefaultAsync();
+            return cart;
         }
 
-        public Task<Checkout> UpdateAsync(Checkout checkout)
+        public async Task<Checkout> UpdateAsync(Checkout checkout)
         {
-            throw new NotImplementedException();
+            await _checkoutCollection
+                .ReplaceOneAsync(c => c.Id == checkout.Id, checkout);
+            return checkout;
         }
     }
 }
