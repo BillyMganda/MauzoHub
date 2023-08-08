@@ -14,24 +14,29 @@ namespace MauzoHub.Infrastructure.Repositories
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
             var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
-            _cartsCollection = database.GetCollection<Cart>(databaseSettings.Value.CartsCollectionName);
-
-            
+            _cartsCollection = database.GetCollection<Cart>(databaseSettings.Value.CartsCollectionName);            
         }
 
-        public Task AddAsync(Cart cart)
+        public async Task<Cart> AddAsync(Cart cart)
         {
-            throw new NotImplementedException();
+            await _cartsCollection
+                .InsertOneAsync(cart);
+            return cart;
         }
 
-        public Task<Cart> GetByUserIdAsync(Guid userId)
+        public async Task<Cart> GetByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var cart = await _cartsCollection
+                .Find(c => c.UserId == userId)
+                .FirstOrDefaultAsync();
+            return cart;
         }
 
-        public Task UpdateAsync(Cart cart)
+        public async Task<Cart> UpdateAsync(Cart cart)
         {
-            throw new NotImplementedException();
+            await _cartsCollection
+                .ReplaceOneAsync(c => c.Id == cart.Id, cart);
+            return cart;
         }
     }
 }
