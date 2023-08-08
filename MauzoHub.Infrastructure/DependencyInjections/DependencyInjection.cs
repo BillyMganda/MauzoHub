@@ -28,6 +28,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
                 options.AppointmentsCollectionName = configuration.GetSection("MauzoHubDatabase:AppointmentsCollectionName").Value!;
                 options.ReviewsCollectionName = configuration.GetSection("MauzoHubDatabase:ReviewsCollectionName").Value!;
                 options.CartsCollectionName = configuration.GetSection("MauzoHubDatabase:CartsCollectionName").Value!;
+                options.CheckoutCollectionName = configuration.GetSection("MauzoHubDatabase:CheckoutCollectionName").Value!;
                 // Set other properties of MauzoHubDatabaseSettings here
             });
 
@@ -58,6 +59,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICheckoutRepository, CheckoutRepository>();
 
             // JWT
             services.AddAuthentication(x => {
