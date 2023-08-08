@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Carts\Handlers\" />
     <Folder Include="CQRS\Carts\Queries\" />
   </ItemGroup>
 
