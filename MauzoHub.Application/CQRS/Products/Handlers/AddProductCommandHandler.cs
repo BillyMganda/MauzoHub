@@ -57,6 +57,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
                     LastModified = DateTime.Now,
                     Name = request.Name,
                     Description = request.Description,
+                    Price = request.Price,
                     Images = imageStrings,
                     BusinessId = request.BusinessId,
                 };
@@ -68,6 +69,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
                     Id = newProduct.Id,
                     Name = newProduct.Name,
                     Description= newProduct.Description,
+                    Price= newProduct.Price,
                     Images= newProduct.Images,
                     BusinessId= newProduct.BusinessId,
                 };

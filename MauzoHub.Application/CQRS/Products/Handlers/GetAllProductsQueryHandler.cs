@@ -34,6 +34,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
+                    Price = p.Price,
                     Images = p.Images,
                     BusinessId = p.BusinessId,
                 });

@@ -12,5 +12,6 @@ namespace MauzoHub.Application.CQRS.Products.Commands
         public string Name { get; set; } = string.Empty;
         [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; }
     }
 }
