@@ -19,8 +19,4 @@
     <ProjectReference Include="..\MauzoHub.Domain\MauzoHub.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Reviews\Queries\" />
-  </ItemGroup>
-
 </Project>
