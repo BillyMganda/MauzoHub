@@ -59,6 +59,7 @@ namespace MauzoHub.Infrastructure.DependencyInjections
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICheckoutRepository, CheckoutRepository>();
 
             // JWT
             services.AddAuthentication(x => {
