@@ -65,6 +65,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
 
                 product.Name = request.Name;
                 product.Description = request.Description;
+                product.Price = request.Price;
                 product.LastModified = DateTime.Now;
 
                 await _productRepository.UpdateAsync(product);
@@ -74,6 +75,7 @@ namespace MauzoHub.Application.CQRS.Products.Handlers
                     Id = product.Id,
                     Name = product.Name,
                     Description = product.Description,
+                    Price = product.Price,
                     Images = product.Images,
                     BusinessId = product.BusinessId,
                 };
