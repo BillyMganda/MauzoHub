@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using MauzoHub.Application.DTOs;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace MauzoHub.Application.CQRS.Reviews.Commands
