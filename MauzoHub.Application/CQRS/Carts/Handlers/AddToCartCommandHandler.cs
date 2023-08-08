@@ -31,18 +31,21 @@ namespace MauzoHub.Application.CQRS.Carts.Handlers
 
             try
             {
+                // Get the user's cart (create a new cart if not exists)
                 var cart = await _cartRepository.GetByUserIdAsync(request.UserId);
                 if (cart == null)
                 {
                     cart = new Cart { UserId = request.UserId };
                 }
 
+                // Check if the product exists
                 var product = await _productRepository.GetByIdAsync(request.ProductId);
                 if (product == null)
                 {
                     throw new NotFoundException("Product not found.");
                 }
 
+                // Check if the product is already in the cart
                 var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == request.ProductId);
                 if (existingItem != null)
                 {
@@ -53,6 +56,7 @@ namespace MauzoHub.Application.CQRS.Carts.Handlers
                     cart.Items.Add(new CartItem { ProductId = request.ProductId, Quantity = request.Quantity });
                 }
 
+                // Save the cart to the repository
                 if (cart.Id == Guid.Empty)
                 {
                     await _cartRepository.AddAsync(cart);
