@@ -1,7 +1,10 @@
 using MauzoHub.Application.CQRS.Checkouts;
 using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
+using MauzoHub.Prentation.Controllers;
+using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace MauzoHub.Tests
@@ -39,6 +42,32 @@ namespace MauzoHub.Tests
 
             // assert
             mockCartRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Cart>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task ProceedToCheckoutController_Success()
+        {
+            // Set up mock mediator and context
+            var mockMediator = new Mock<IMediator>();
+            // ...
+
+            // Create the controller
+            var controller = new CheckoutsController(mockMediator.Object);
+
+            // Create the command
+            var command = new ProceedToCheckoutCommand
+            {
+                UserId = Guid.NewGuid(),
+                Payment = new Payment(),
+                ShippingAddress = new ShippingAddress()
+            };
+
+            // Invoke the controller action
+            var result = await controller.ProceedToCheckout(command) as NoContentResult;
+
+            // Assert the result
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
         }
     }
 }
