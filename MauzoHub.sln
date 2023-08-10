@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauzoHub.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauzoHub.Prentation", "MauzoHub.Prentation\MauzoHub.Prentation.csproj", "{5756639C-6EF4-47BE-A645-50F7554B5DE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauzoHub.MVCApp", "MauzoHub.MVCApp\MauzoHub.MVCApp.csproj", "{ACA77933-2A9A-47D4-8AAF-6D3372F4C249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauzoHub.MVCApp", "MauzoHub.MVCApp\MauzoHub.MVCApp.csproj", "{ACA77933-2A9A-47D4-8AAF-6D3372F4C249}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauzoHub.Tests", "MauzoHub.Tests\MauzoHub.Tests.csproj", "{62C12170-F604-4F8B-A7B0-90C33112F4A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{ACA77933-2A9A-47D4-8AAF-6D3372F4C249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA77933-2A9A-47D4-8AAF-6D3372F4C249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACA77933-2A9A-47D4-8AAF-6D3372F4C249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C12170-F604-4F8B-A7B0-90C33112F4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C12170-F604-4F8B-A7B0-90C33112F4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C12170-F604-4F8B-A7B0-90C33112F4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C12170-F604-4F8B-A7B0-90C33112F4A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
