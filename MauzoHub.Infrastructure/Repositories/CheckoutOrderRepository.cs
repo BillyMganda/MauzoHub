@@ -8,33 +8,37 @@ namespace MauzoHub.Infrastructure.Repositories
 {
     public class CheckoutOrderRepository : ICheckoutOrderRepository
     {
-        private readonly IMongoCollection<Checkout> _checkoutCollection;
+        private readonly IMongoCollection<CheckoutOrder> _checkoutCollection;
         public CheckoutOrderRepository(IOptions<MauzoHubDatabaseSettings> databaseSettings)
         {
             var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
             var database = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
 
-            _checkoutCollection = database.GetCollection<Checkout>(databaseSettings.Value.CheckoutCollectionName);
+            _checkoutCollection = database.GetCollection<CheckoutOrder>(databaseSettings.Value.CheckoutCollectionName);
         }
 
-        public Task<IEnumerable<CheckoutOrder>> GetAllAsync()
+        public async Task<IEnumerable<CheckoutOrder>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var orders = await _checkoutCollection.Find(o => true).ToListAsync();
+            return orders;
         }
 
-        public Task<CheckoutOrder> GetByIdAsync(Guid orderId)
+        public async Task<CheckoutOrder> GetByIdAsync(Guid orderId)
         {
-            throw new NotImplementedException();
+            var order = await _checkoutCollection.Find(o => o.Id == orderId).FirstOrDefaultAsync();
+            return order;
         }
 
-        public Task<IEnumerable<CheckoutOrder>> GetByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<CheckoutOrder>> GetByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var orders = await _checkoutCollection.Find(o => o.UserId == userId).ToListAsync();
+            return orders;
         }
 
-        public Task<IEnumerable<CheckoutOrder>> GetOrdersBetweenDatesAsync(DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<CheckoutOrder>> GetOrdersBetweenDatesAsync(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            var orders = await _checkoutCollection.Find(o => o.DateCreated >= startDate && o.DateCreated <= endDate).ToListAsync();
+            return orders;
         }
     }
 }
