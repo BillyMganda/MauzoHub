@@ -43,7 +43,14 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<IEnumerable<CheckoutOrder>> GetOrdersForADateAsync(DateTime date)
         {
-            return await _checkoutCollection.Find(o => o.DateCreated == date).ToListAsync();
+            DateTime startDate = date.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+            var orders = await _checkoutCollection.Find(o =>
+                o.DateCreated >= startDate && o.DateCreated < endDate)
+                .ToListAsync();
+
+            return orders;
         }
     }
 }
