@@ -67,7 +67,7 @@ namespace MauzoHub.Tests
 
             // Assert the result
             Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, result!.StatusCode);
         }
     }
 }
