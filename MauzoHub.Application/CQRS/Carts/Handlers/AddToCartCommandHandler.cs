@@ -53,7 +53,7 @@ namespace MauzoHub.Application.CQRS.Carts.Handlers
                 }
                 else
                 {
-                    cart.Items.Add(new CartItem { ProductId = request.ProductId, Quantity = request.Quantity });
+                    cart.Items.Add(new CartItem { ProductId = request.ProductId, Quantity = request.Quantity, DateCreated = DateTime.Now, LastModified = DateTime.Now });
                 }
 
                 // Save the cart to the repository
