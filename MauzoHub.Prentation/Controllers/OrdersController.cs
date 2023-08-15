@@ -29,5 +29,13 @@ namespace MauzoHub.Prentation.Controllers
             var orderDto = await _mediator.Send(query);
             return Ok(orderDto);
         }
+
+        [HttpGet("userid/{id}")]
+        public async Task<IActionResult> GetOrdersByUserId(Guid id)
+        {
+            var query = new GetOrdersByUserIdQuery { UserId = id };
+            var orderDtos = await _mediator.Send(query);
+            return Ok(orderDtos);
+        }
     }
 }
