@@ -51,5 +51,18 @@ namespace MauzoHub.Prentation.Controllers
 
             return Ok(orders);
         }
+
+        [HttpGet("date")]
+        public async Task<IActionResult> GetOrdersByDate([FromQuery] DateTime date)
+        {
+            var query = new GetOrdersForADateQuery
+            {
+                OrderDate = date
+            };
+
+            var orders = await _mediator.Send(query);
+
+            return Ok(orders);
+        }
     }
 }
