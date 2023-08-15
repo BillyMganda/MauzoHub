@@ -45,7 +45,9 @@ namespace MauzoHub.Application.CQRS.Checkouts
                     UserId = request.UserId,
                     Items = checkoutItems,
                     Payment = request.Payment,
-                    ShippingAddress = request.ShippingAddress
+                    ShippingAddress = request.ShippingAddress,
+                    DateCreated = DateTime.Now,
+                    LastModified = DateTime.Now
                 };
 
                 // Save the checkout to the repository
