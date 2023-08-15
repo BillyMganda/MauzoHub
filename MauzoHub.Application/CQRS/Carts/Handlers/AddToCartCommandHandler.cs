@@ -34,8 +34,8 @@ namespace MauzoHub.Application.CQRS.Carts.Handlers
                 // Get the user's cart (create a new cart if not exists)
                 var cart = await _cartRepository.GetByUserIdAsync(request.UserId);
                 if (cart == null)
-                {
-                    cart = new Cart { UserId = request.UserId };
+                {                    
+                    cart = new Cart { UserId = request.UserId, DateCreated = DateTime.Now, LastModified = DateTime.Now };
                 }
 
                 // Check if the product exists
@@ -53,7 +53,7 @@ namespace MauzoHub.Application.CQRS.Carts.Handlers
                 }
                 else
                 {
-                    cart.Items.Add(new CartItem { ProductId = request.ProductId, Quantity = request.Quantity });
+                    cart.Items.Add(new CartItem { ProductId = request.ProductId, Quantity = request.Quantity, DateCreated = DateTime.Now, LastModified = DateTime.Now });
                 }
 
                 // Save the cart to the repository
