@@ -37,5 +37,19 @@ namespace MauzoHub.Prentation.Controllers
             var orderDtos = await _mediator.Send(query);
             return Ok(orderDtos);
         }
+
+        [HttpGet("between-dates")]
+        public async Task<IActionResult> GetOrdersBetweenDates([FromQuery] DateTime dateFrom, [FromQuery] DateTime dateTo)
+        {
+            var query = new GetOrdersBetweenDatesQuery
+            {
+                DateFrom = dateFrom,
+                DateTo = dateTo
+            };
+
+            var orders = await _mediator.Send(query);
+
+            return Ok(orders);
+        }
     }
 }
