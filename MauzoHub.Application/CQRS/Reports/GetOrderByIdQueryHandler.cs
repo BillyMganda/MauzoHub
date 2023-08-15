@@ -35,7 +35,7 @@ namespace MauzoHub.Application.CQRS.Reports
                     {
                         DateTime = DateTime.Now,
                         ErrorCode = "404",
-                        ErrorMessage = "order not found",
+                        ErrorMessage = $"order with orderid {request.OrderId} not found",
                         IPAddress = remoteIpAddress!.ToString(),
                         ActionUrl = actionUrl,
                         HttpMethod = httpMethod,
