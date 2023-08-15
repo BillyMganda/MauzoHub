@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using MauzoHub.Application.DTOs;
+using MediatR;
 
 namespace MauzoHub.Application.CQRS.Reports
 {
