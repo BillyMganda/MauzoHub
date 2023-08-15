@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MauzoHub.Application.CQRS.Reports
 {
-    internal class GetOrdersByUserIdQuery : IRequest<IEnumerable<OrderDto>>
+    public class GetOrdersByUserIdQuery : IRequest<IEnumerable<OrderDto>>
     {
-        [Required(ErrorMessage = "variable userid is required")]
+        [Required(ErrorMessage = "userid is required")]
         public Guid UserId { get; set; }
     }
 }
