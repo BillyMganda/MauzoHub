@@ -40,5 +40,10 @@ namespace MauzoHub.Infrastructure.Repositories
             var orders = await _checkoutCollection.Find(o => o.DateCreated >= startDate && o.DateCreated <= endDate).ToListAsync();
             return orders;
         }
+
+        public async Task<IEnumerable<CheckoutOrder>> GetOrdersForADateAsync(DateTime date)
+        {
+            return await _checkoutCollection.Find(o => o.DateCreated == date).ToListAsync();
+        }
     }
 }
