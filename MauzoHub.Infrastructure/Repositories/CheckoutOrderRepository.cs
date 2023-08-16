@@ -19,25 +19,37 @@ namespace MauzoHub.Infrastructure.Repositories
 
         public async Task<IEnumerable<CheckoutOrder>> GetAllAsync()
         {
-            var orders = await _checkoutCollection.Find(o => true).ToListAsync();
+            var orders = await _checkoutCollection
+                .Find(o => true)
+                .ToListAsync();
+
             return orders;
         }
 
         public async Task<CheckoutOrder> GetByIdAsync(Guid orderId)
         {
-            var order = await _checkoutCollection.Find(o => o.Id == orderId).FirstOrDefaultAsync();
+            var order = await _checkoutCollection
+                .Find(o => o.Id == orderId)
+                .FirstOrDefaultAsync();
+
             return order;
         }
 
         public async Task<IEnumerable<CheckoutOrder>> GetByUserIdAsync(Guid userId)
         {
-            var orders = await _checkoutCollection.Find(o => o.UserId == userId).ToListAsync();
+            var orders = await _checkoutCollection
+                .Find(o => o.UserId == userId)
+                .ToListAsync();
+
             return orders;
         }
 
         public async Task<IEnumerable<CheckoutOrder>> GetOrdersBetweenDatesAsync(DateTime startDate, DateTime endDate)
         {
-            var orders = await _checkoutCollection.Find(o => o.DateCreated >= startDate && o.DateCreated <= endDate).ToListAsync();
+            var orders = await _checkoutCollection
+                .Find(o => o.DateCreated >= startDate && o.DateCreated <= endDate)
+                .ToListAsync();
+
             return orders;
         }
 
@@ -48,6 +60,15 @@ namespace MauzoHub.Infrastructure.Repositories
 
             var orders = await _checkoutCollection.Find(o =>
                 o.DateCreated >= startDate && o.DateCreated < endDate)
+                .ToListAsync();
+
+            return orders;
+        }
+
+        public async Task<IEnumerable<CheckoutOrder>> GetOrdersByProductIdAsync(Guid productId)
+        {
+            var orders = await _checkoutCollection
+                .Find(o => o.Items.Any(item => item.ProductId == productId))
                 .ToListAsync();
 
             return orders;
