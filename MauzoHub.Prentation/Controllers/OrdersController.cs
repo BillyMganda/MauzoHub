@@ -1,4 +1,5 @@
 ﻿using MauzoHub.Application.CQRS.Reports;
+using MauzoHub.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,6 +64,15 @@ namespace MauzoHub.Prentation.Controllers
             var orders = await _mediator.Send(query);
 
             return Ok(orders);
+        }
+
+        [HttpGet("productid")]
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByProductId(Guid productId)
+        {
+            var query = new GetOrdersByProductIdQuery { ProductId = productId };
+            var orderDtos = await _mediator.Send(query);
+
+            return Ok(orderDtos);
         }
     }
 }
