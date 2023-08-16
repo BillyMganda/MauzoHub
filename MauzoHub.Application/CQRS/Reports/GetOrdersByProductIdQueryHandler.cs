@@ -8,7 +8,7 @@ using Serilog;
 
 namespace MauzoHub.Application.CQRS.Reports
 {
-    public class GetOrdersByProductIdQueryHandler : IRequestHandler<GetOrdersByProductIdQuery, IEnumerable<OrderDto>>
+    public class GetOrdersByProductIdQueryHandler : IRequestHandler<GetOrdersByProductIdQuery, IEnumerable<OrderSummaryDto>>
     {
         private readonly ICheckoutOrderRepository _checkoutOrderRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -18,7 +18,7 @@ namespace MauzoHub.Application.CQRS.Reports
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<OrderDto>> Handle(GetOrdersByProductIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderSummaryDto>> Handle(GetOrdersByProductIdQuery request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
@@ -46,17 +46,14 @@ namespace MauzoHub.Application.CQRS.Reports
                     throw new NotFoundException("order not found");
                 }
 
-                var orderDtos = orders.Select(order => new OrderDto
+                var orderDtos = orders.Select(order => new OrderSummaryDto
                 {
                     Id = order.Id,
                     DateCreated = order.DateCreated,
                     UserId = order.UserId,
-                    Items = order.Items.Select(item => new OrderItemDto
-                    {
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity
-                    }).ToList()
-                }).ToList();
+                    ProductId = order.Items.FirstOrDefault()?.ProductId ?? Guid.Empty, 
+                    Quantity = order.Items.FirstOrDefault()?.Quantity ?? 0 
+                });
 
                 return orderDtos;
             }
