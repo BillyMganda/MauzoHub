@@ -67,7 +67,7 @@ namespace MauzoHub.Prentation.Controllers
         }
 
         [HttpGet("productid")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByProductId(Guid productId)
+        public async Task<ActionResult<IEnumerable<OrderSummaryDto>>> GetOrdersByProductId(Guid productId)
         {
             var query = new GetOrdersByProductIdQuery { ProductId = productId };
             var orderDtos = await _mediator.Send(query);
