@@ -9,5 +9,6 @@ namespace MauzoHub.Domain.Interfaces
         Task<IEnumerable<CheckoutOrder>> GetByUserIdAsync(Guid userId);
         Task<IEnumerable<CheckoutOrder>> GetOrdersBetweenDatesAsync(DateTime startDate, DateTime endDate);
         Task<IEnumerable<CheckoutOrder>> GetOrdersForADateAsync(DateTime date);
+        Task<IEnumerable<CheckoutOrder>> GetOrdersByProductIdAsync(Guid productId);
     }
 }
