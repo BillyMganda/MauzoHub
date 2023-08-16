@@ -1,4 +1,5 @@
-﻿using MauzoHub.Application.DTOs;
+﻿using MauzoHub.Application.CustomExceptions;
+using MauzoHub.Application.DTOs;
 using MauzoHub.Domain.Entities;
 using MauzoHub.Domain.Interfaces;
 using MediatR;
@@ -28,6 +29,22 @@ namespace MauzoHub.Application.CQRS.Reports
             try
             {
                 var orders = await _checkoutOrderRepository.GetOrdersByProductIdAsync(request.ProductId);
+
+                if(orders is null)
+                {
+                    var errorLog = new ErrorLog
+                    {
+                        DateTime = DateTime.Now,
+                        ErrorCode = "404",
+                        ErrorMessage = $"product with id {request.ProductId} not found",
+                        IPAddress = remoteIpAddress!.ToString(),
+                        ActionUrl = actionUrl,
+                        HttpMethod = httpMethod,
+                    };
+                    Log.Error("An error occurred while processing the command, order not found: {@ErrorLog}", errorLog);
+
+                    throw new NotFoundException("order not found");
+                }
 
                 var orderDtos = orders.Select(order => new OrderDto
                 {
